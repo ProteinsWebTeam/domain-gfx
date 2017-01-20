@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>domain_gfx demo page</title>
+  <script>
+    // live reload script injection
+    const s = document.createElement('script');
+    s.src = `http://${
+      (location.host || 'localhost').split(':')[0]
+    }:35729/livereload.js?snipver=1`;
+    document.head.appendChild(s);
+  </script>
+  <script
+    src="lib.js"
+    defer
+    onerror="alert('There was a problem, are you running \'npm run start\'?')">
+  </script>
+  <style>
+    .example {
+      border: 1px solid deepskyblue;
+      padding: 1em;
+    }
+    .example > svg {
+      display: inline-block;
+      border: 1px solid forestgreen;
+    }
+  </style>
+</head>
+
+<body>
+  <ul>
+    Examples:
+    <li>
+      <div class="example" id="1"></div>
+    </li>
+  </ul>
+  <script src="script.js" defer></script>
+</body>
+</html>
