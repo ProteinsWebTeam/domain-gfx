@@ -1,7 +1,8 @@
-import svg from './element';
-import group from './shapes/group';
-import domain from './entities/domain';
+import svg from './svg';
+import group from './elements/group';
 import sequence from './entities/sequence';
+import domain from './entities/domain';
+import motif from './entities/motif';
 
 export default class SvgRenderer {
   constructor ({width, height}) {
@@ -17,16 +18,6 @@ export default class SvgRenderer {
     return this._canvas;
   }
 
-  drawRegion = (region, residueWidth) => {
-    console.log('drawing region');
-    console.log(region);
-    const g = group(
-      {transform: `translate(${region.start * residueWidth}, 5)`},
-      domain(region, residueWidth)
-    );
-    this._canvas.appendChild(g);
-  }
-
   drawSequence = length => {
     const g = group(
       {transform: 'translate(0 10)'},
@@ -35,6 +26,38 @@ export default class SvgRenderer {
         length,
         height: 5,
         color: '#D8D8D8',
+      })
+    );
+    this._canvas.appendChild(g);
+  }
+
+  drawRegion = (region, residueWidth) => {
+    console.log('drawing region');
+    console.log(region);
+    const g = group(
+      {transform: `translate(${region.start * residueWidth}, 5)`},
+      domain(region, residueWidth)
+    );
+    this._canvas.appendChild(g);
+    const textToFit = g.querySelector('[data-maxwidth]');
+    if (!textToFit) return;
+    if (textToFit.getBBox().width <= +textToFit.dataset.maxwidth) {
+      textToFit.setAttribute('opacity', 1);
+    } else {
+      textToFit.parentElement.removeChild(textToFit);
+    }
+  }
+
+  drawMotif = (m, residueWidth) => {
+    console.log('drawing motif');
+    console.log(m);
+    const g = group(
+      {transform: `translate(${m.start * residueWidth}, 6)`},
+      motif({
+        position: {x: 0, y: 0},
+        length: (m.end - m.start) * residueWidth,
+        height: 8,
+        color: m.color || m.colour,
       })
     );
     this._canvas.appendChild(g);

@@ -1,4 +1,4 @@
-import svg from '../element';
+import svg from '../svg';
 
 export class PathData {
   constructor (startPosition = 'm0,0') {

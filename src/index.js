@@ -26,8 +26,16 @@ export default class DomainGFX {
       this._data.length * this._params.image.width.residue
     );
     // draw regions
-    for (const region of this._data.regions) {
+    for (const region of this._data.regions || []) {
+      // If in the object, but falsy, don't display
+      if (typeof region.display !== 'undefined' && !region.display) return;
       this._renderer.drawRegion(region, this._params.image.width.residue);
+    }
+    // draw motifs
+    for (const motif of this._data.motifs || []) {
+      // If in the object, but falsy, don't display
+      if (typeof motif.display !== 'undefined' && !motif.display) return;
+      this._renderer.drawMotif(motif, this._params.image.width.residue);
     }
   };
 
@@ -41,8 +49,8 @@ export default class DomainGFX {
 
   render = () => {
     console.log(this);
-    this._draw();
     this._parent.appendChild(this._canvas);
+    this._draw();
     // console.log(this._data);
     // console.log(this._parent);
     // console.log(this._options);
