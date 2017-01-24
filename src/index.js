@@ -3,6 +3,8 @@ import merge from 'lodash-es/merge';
 import SvgRenderer from './renderer/svg';
 import getDefaults from './defaults';
 
+const isHidden = ({hidden, display = true}) => hidden || !display;
+
 export default class DomainGFX {
   constructor ({data = {}, parent, params = {}} = {}) {
     this._data = data;
@@ -21,20 +23,23 @@ export default class DomainGFX {
 
   _draw = () => {
     console.log('drawing');
+    // draw markups
+    for (const markup of this._data.markups || []) {
+      if (isHidden(markup)) return;
+      this._renderer.drawMarkup(markup, this._params.image.width.residue);
+    }
     // draw sequence
     this._renderer.drawSequence(
       this._data.length * this._params.image.width.residue
     );
     // draw regions
     for (const region of this._data.regions || []) {
-      // If in the object, but falsy, don't display
-      if (typeof region.display !== 'undefined' && !region.display) return;
+      if (isHidden(region)) return;
       this._renderer.drawRegion(region, this._params.image.width.residue);
     }
     // draw motifs
     for (const motif of this._data.motifs || []) {
-      // If in the object, but falsy, don't display
-      if (typeof motif.display !== 'undefined' && !motif.display) return;
+      if (isHidden(motif)) return;
       this._renderer.drawMotif(motif, this._params.image.width.residue);
     }
   };

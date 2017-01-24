@@ -1,5 +1,6 @@
 import svg from './svg';
 import group from './elements/group';
+import markup from './entities/markup';
 import sequence from './entities/sequence';
 import domain from './entities/domain';
 import motif from './entities/motif';
@@ -18,6 +19,16 @@ export default class SvgRenderer {
     return this._canvas;
   }
 
+  drawMarkup = (m, residueWidth) => {
+    console.log('drawing markup');
+    console.table(m);
+    const g = group(
+      {transform: `translate(${m.start * residueWidth}, 10)`},
+      markup(m, residueWidth)
+    );
+    this._canvas.appendChild(g);
+  }
+
   drawSequence = length => {
     const g = group(
       {transform: 'translate(0 10)'},
@@ -33,7 +44,7 @@ export default class SvgRenderer {
 
   drawRegion = (region, residueWidth) => {
     console.log('drawing region');
-    console.log(region);
+    console.table(region);
     const g = group(
       {transform: `translate(${region.start * residueWidth}, 5)`},
       domain(region, residueWidth)
@@ -50,7 +61,7 @@ export default class SvgRenderer {
 
   drawMotif = (m, residueWidth) => {
     console.log('drawing motif');
-    console.log(m);
+    console.table(m);
     const g = group(
       {transform: `translate(${m.start * residueWidth}, 6)`},
       motif({

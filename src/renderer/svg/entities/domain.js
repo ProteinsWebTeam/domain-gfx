@@ -4,6 +4,8 @@ import rectangle from '../elements/rectangle';
 import defs from '../elements/defs';
 import mask from '../elements/mask';
 import textEl from '../elements/text';
+// import gradient from '../elements/gradient';
+// import svg from '../svg';
 import uniqueId from '../uniqueId';
 
 const height = 10;
@@ -14,6 +16,9 @@ const line = (x = 0, y = 0) => {
   if (y === 0) return `h${x}`;
   return `l${x},${y}`;
 };
+
+const horizontalLine = length => line(length, 0);
+const verticalLine = length => line(0, length);
 
 const arc = (rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y) => (
   `A${rx},${ry},${xAxisRotate},${largeArcFlag},${sweepFlag},${x},${y}`
@@ -58,15 +63,14 @@ const domainStart = startStyle => {
   }
 };
 
-const horizontalLine = length => line(length, 0);
-const verticalLine = length => line(0, length);
-
 const domainTopLine = length => horizontalLine(length);
 const domainBottomLine = length => horizontalLine(-length);
 
-const domain = (
-  {start, end, startStyle, endStyle, color, colour, residueWidth, mask}
-) => {
+const domain = ({
+  start, end, startStyle, endStyle,
+  color, colour, gradient,
+  residueWidth, mask
+}) => {
   const length = (end - start) * residueWidth;
   const topBottomLength = length - (2 * radius);
   const d = new PathData(`m${radius},0`)
@@ -75,19 +79,22 @@ const domain = (
     .add(domainBottomLine(topBottomLength))
     .add(domainStart(startStyle))
     .close();
+  // return path({d, fill: gradient, stroke: color || colour, mask});
+  // return path({d, fill: gradient, mask});
   return path({d, fill: color || colour, mask});
 };
 
 const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
-  const defId = uniqueId();
+  const maskId = uniqueId();
   return {
-    defId,
+    maskId,
     maskElement: mask(
       {
-        id: defId, x: 0, y: 0,
+        id: maskId, x: 0, y: 0,
         width: (end - start) * residueWidth, height,
         fill: '#fff',
       },
+      // beginning (partially covered)
       rectangle({
         x: 0,
         y: 0,
@@ -95,6 +102,7 @@ const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
         height,
         opacity: 0.6,
       }),
+      // middle (completely uncovered)
       rectangle({
         x: (aliStart - start) * residueWidth,
         y: 0,
@@ -102,6 +110,7 @@ const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
         height,
         opacity: 1,
       }),
+      // end (partially covered)
       rectangle({
         x: (aliEnd - start) * residueWidth,
         y: 0,
@@ -113,17 +122,34 @@ const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
   };
 };
 
+// const grad = ({color, colour}) => {
+//   const _color = color || colour;
+//   const gradientId = uniqueId();
+//   return {
+//     gradientId,
+//     gradientElement: gradient(
+//       'linear',
+//       {id: gradientId, x1: 0, x2: 0, y1: 0, y2: 1},// top to bottom
+//       svg('stop', {offset: '0%', 'stop-color': '#fff'}),
+//       svg('stop', {offset: '40%', 'stop-color': _color}),
+//       svg('stop', {offset: '50%', 'stop-color': _color}),
+//       svg('stop', {offset: '100%', 'stop-color': '#fff'})
+//     ),
+//   };
+// };
+
 export default (
   {start, aliStart, aliEnd, end, startStyle, endStyle, color, colour, text},
   residueWidth
 ) => {
-  const {defId, maskElement} = envelope(
+  const {maskId, maskElement} = envelope(
     {
       start, aliStart: aliStart || start,
       aliEnd: aliEnd || end, end,
       residueWidth,
     }
   );
+  // const {gradientId, gradientElement} = grad({color, colour});
   const textElement = textEl(
     {
       x: ((end - start) * residueWidth) / 2, y: height * 0.75,
@@ -136,11 +162,12 @@ export default (
   textElement.dataset.maxwidth = (end - start) * residueWidth;
   return group(
     null,
-    defs(null, maskElement),
+    defs(null, maskElement/*, gradientElement*/),
     domain({
-      start, end, startStyle, endStyle,
-      color, colour, residueWidth,
-      mask: `url(#${defId})`,
+      start, end, startStyle, endStyle, residueWidth,
+      color, colour,
+      mask: `url(#${maskId})`,
+      // gradient: `url(#${gradientId})`,
     }),
     text && textElement
   );

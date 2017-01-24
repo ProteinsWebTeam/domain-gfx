@@ -10,8 +10,15 @@ export class PathData {
     return this;
   }
 
+  finish (close) {
+    if (close) {
+      this._data += 'z';
+    }
+    return this._data;
+  }
+
   close () {
-    return this._data + 'z';
+    return this.finish(true);
   }
 };
 
