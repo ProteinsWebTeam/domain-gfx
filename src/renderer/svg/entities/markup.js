@@ -1,8 +1,5 @@
-// import svg from '../svg';
-import path, {PathData} from '../elements/path';
-import group from '../elements/group';
-import rectangle from '../elements/rectangle';
-import circle from '../elements/circle';
+import PathData from '../utils/pathData';
+import {path, group, rectangle, circle} from '../svg';
 
 const line = (x = 0, y = 0) => {
   if (x === 0) return `v${y}`;
@@ -33,9 +30,45 @@ const buildDiamondHead = (color, isOnTop) => {
 const buildCircleHead = (color, isOnTop) => {
   return circle({cx: 0, cy: isOnTop ? -offset : offset, r: 1.5, fill: color});
 };
-const buildArrowHead = (color, isOnTop) => {};
-const buildPointerHead = (color, isOnTop) => {};
-const buildLineHead = (color, isOnTop) => {};
+const buildArrowHead = (color, isOnTop) => {
+  let d;
+  if (isOnTop) {
+    d = new PathData(`m-2,${-(offset - 2)}`)
+      .add(line(2, -2))
+      .add(line(2, 2))
+      .finish();
+  } else {
+    d = new PathData(`m-2,${offset - 2}`)
+      .add(line(2, 2))
+      .add(line(2, -2))
+      .finish();
+  }
+  return path({stroke: color, fill: 'none', d});
+};
+const buildPointerHead = (color, isOnTop) => {
+  const sequenceSize = 5;
+  let d;
+  if (isOnTop) {
+    d = new PathData(`m-2,${-((sequenceSize / 2) + 2)}`)
+      .add(line(2, 2))
+      .add(line(2, -2))
+      .finish();
+  } else {
+    d = new PathData(`m-2,${(sequenceSize / 2) + 2}`)
+      .add(line(2, -2))
+      .add(line(2, 2))
+      .finish();
+  }
+  return path({stroke: color, fill: 'none', d});
+};
+const buildLineHead = (color, isOnTop) => {
+  return path({
+    stroke: color,
+    d: new PathData(`m0,${((isOnTop ? -1 : 1) * offset) - 1.5}`)
+      .add(verticalLine(3))
+      .finish(),
+  });
+};
 
 const buildHead = ({style, color, isOnTop}) => {
   switch (style) {
@@ -57,7 +90,7 @@ const buildHead = ({style, color, isOnTop}) => {
 
 export default (
   {
-    start, end, v_align, vAlign,
+    start, end, v_align, vAlign, level = 0,
     lineColor, lineColour, headColor, headColour, color, colour,
     headStyle
   },
@@ -65,13 +98,15 @@ export default (
 ) => {
   // eslint-disable-next-line camelcase
   const isOnTop = /top/i.test(v_align || vAlign);
-  let d = new PathData().add(verticalLine(offset * (isOnTop ? -1 : 1)));
+  let d = new PathData()
+    .add(verticalLine(((1.5 * level) + offset) * (isOnTop ? -1 : 1)));
   if (end) {
     d = d
       .add(horizontalLine((end - start) * residueWidth))
-      .add(verticalLine(offset * (isOnTop ? 1 : -1)));
+      .add(verticalLine(((1.5 * level) + offset) * (isOnTop ? 1 : -1)));
   }
   d = d.finish();
+  console.log({level});
   return group(
     null,
     path({

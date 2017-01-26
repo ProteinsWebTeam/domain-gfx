@@ -1,11 +1,15 @@
 // @flow
 const namespace = 'http://www.w3.org/2000/svg';
 
-export default (
-  name/*: string */,
-  attributes/*: {[key: string]: number | string} */ = {},
-  ...children/*: Array<Node | string | null> */
-)/*: Element */ => {
+/*::
+  type Attributes = {[key: string]: number | string};
+  type Child = Node | string | null;
+*/
+
+const _svg = (name/*: string */) => (
+  attributes/*: Attributes */ = {},
+  ...children/*: Array<Child> */
+) => {
   // Create element
   const element = document.createElementNS(namespace, name);
   // Set attributes
@@ -24,3 +28,21 @@ export default (
   //
   return element;
 };
+
+export const svg = _svg('svg');
+
+export const circle = _svg('circle');
+
+export const defs = _svg('defs');
+
+export const gradient = (type/*: string */) => _svg(`${type}Gradient`);
+
+export const group = _svg('g');
+
+export const mask = _svg('mask');
+
+export const path = _svg('path');
+
+export const rectangle = _svg('rect');
+
+export const text = _svg('text');

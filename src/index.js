@@ -1,5 +1,6 @@
 import merge from 'lodash-es/merge';
 
+import getTooltipManager from './tooltip/tooltip';
 import SvgRenderer from './renderer/svg';
 import getDefaults from './defaults';
 
@@ -24,9 +25,17 @@ export default class DomainGFX {
   _draw = () => {
     console.log('drawing');
     // draw markups
-    for (const markup of this._data.markups || []) {
-      if (isHidden(markup)) return;
-      this._renderer.drawMarkup(markup, this._params.image.width.residue);
+    const markups = (this._data.markups || [])
+      .sort((a, b) => a.start - b.start);
+    const nestedMarkups = [];
+    for (const markup of markups) {
+      if (isHidden(markup)) continue;
+      this._renderer.drawMarkup(
+        markup,
+        this._params.image.width.residue,
+        nestedMarkups
+      );
+      if (markup.end) nestedMarkups.push(markup);
     }
     // draw sequence
     this._renderer.drawSequence(
@@ -34,14 +43,16 @@ export default class DomainGFX {
     );
     // draw regions
     for (const region of this._data.regions || []) {
-      if (isHidden(region)) return;
+      if (isHidden(region)) continue;
       this._renderer.drawRegion(region, this._params.image.width.residue);
     }
     // draw motifs
     for (const motif of this._data.motifs || []) {
-      if (isHidden(motif)) return;
+      if (isHidden(motif)) continue;
       this._renderer.drawMotif(motif, this._params.image.width.residue);
     }
+    // connect tooltip logic
+    getTooltipManager().attachToCanvas(this._renderer.canvas);
   };
 
   _createCanvas = () => {

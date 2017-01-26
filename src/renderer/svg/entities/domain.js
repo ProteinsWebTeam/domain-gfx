@@ -1,12 +1,6 @@
-import group from '../elements/group';
-import path, {PathData} from '../elements/path';
-import rectangle from '../elements/rectangle';
-import defs from '../elements/defs';
-import mask from '../elements/mask';
-import textEl from '../elements/text';
-// import gradient from '../elements/gradient';
-// import svg from '../svg';
-import uniqueId from '../uniqueId';
+import PathData from '../utils/pathData';
+import {path, rectangle, defs, group, mask, text as textEl} from '../svg';
+import uniqueId from '../../../utils/uniqueId';
 
 const height = 10;
 const radius = height / 2;
@@ -155,6 +149,8 @@ export default (
       x: ((end - start) * residueWidth) / 2, y: height * 0.75,
       'text-anchor': 'middle',
       'font-size': 7.5,
+      'font-family': 'Sans-Serif',
+      'fill': '#000',
       opacity: 0,
     },
     text

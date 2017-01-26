@@ -1,33 +1,50 @@
-import svg from './svg';
-import group from './elements/group';
+import {svg, group} from './svg';
 import markup from './entities/markup';
 import sequence from './entities/sequence';
 import domain from './entities/domain';
 import motif from './entities/motif';
+import ns from '../../utils/namespace';
+
+const connectData = (entity, data) => {
+  if (!(window && (data.tooltip || data.metadata))) return;
+  for (const chunk of entity.querySelectorAll(':not(g)')) {
+    chunk[ns] = data;
+  }
+};
 
 export default class SvgRenderer {
   constructor ({width, height}) {
-    this._canvas = svg(
-      'svg',
-      {width, height, viewBox: `0 0 ${width} ${height}`}
-    );
+    this._canvas = svg({width, height, viewBox: `0 0 ${width} ${height}`});
     this._canvas.style.width = `${width * 2}px`;
     this._canvas.style.height = `${height * 2}px`;
+    window.renderer = this;
   }
 
   get canvas () {
     return this._canvas;
   }
 
-  drawMarkup = (m, residueWidth) => {
+  drawMarkup = (m, residueWidth, previousNestedMarkups) => {
     console.log('drawing markup');
     console.table(m);
+    if (m.end && !Number.isFinite(m.level)) {
+      const availableLevels = new Set([0, 1, -1]);
+      for (const previous of previousNestedMarkups) {
+        if (m.start < previous.end) {
+          availableLevels.delete(previous.level);
+        }
+      }
+      const [level] = availableLevels;
+      m.level = level || 0;
+    }
     const g = group(
       {transform: `translate(${m.start * residueWidth}, 10)`},
       markup(m, residueWidth)
     );
+    g.dataset.entity = 'markup';
+    connectData(g, m);
     this._canvas.appendChild(g);
-  }
+  };
 
   drawSequence = length => {
     const g = group(
@@ -39,8 +56,9 @@ export default class SvgRenderer {
         color: '#D8D8D8',
       })
     );
+    g.dataset.entity = 'sequence';
     this._canvas.appendChild(g);
-  }
+  };
 
   drawRegion = (region, residueWidth) => {
     console.log('drawing region');
@@ -49,6 +67,8 @@ export default class SvgRenderer {
       {transform: `translate(${region.start * residueWidth}, 5)`},
       domain(region, residueWidth)
     );
+    g.dataset.entity = 'region';
+    connectData(g, region);
     this._canvas.appendChild(g);
     const textToFit = g.querySelector('[data-maxwidth]');
     if (!textToFit) return;
@@ -57,7 +77,7 @@ export default class SvgRenderer {
     } else {
       textToFit.parentElement.removeChild(textToFit);
     }
-  }
+  };
 
   drawMotif = (m, residueWidth) => {
     console.log('drawing motif');
@@ -71,6 +91,8 @@ export default class SvgRenderer {
         color: m.color || m.colour,
       })
     );
+    g.dataset.entity = 'motif';
+    connectData(g, m);
     this._canvas.appendChild(g);
-  }
+  };
 }

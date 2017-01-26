@@ -1,16 +1,18 @@
-import svg from '../svg';
-
-export class PathData {
-  constructor (startPosition = 'm0,0') {
+// @flow export
+export default class {
+  /*::
+   _data: string;
+   */
+  constructor (startPosition/*: string */ = 'm0,0') {
     this._data = startPosition;
   }
 
-  add (data = '') {
+  add (data/*: string */ = '') {
     this._data += data;
     return this;
   }
 
-  finish (close) {
+  finish (close/*: boolean */) {
     if (close) {
       this._data += 'z';
     }
@@ -21,5 +23,3 @@ export class PathData {
     return this.finish(true);
   }
 };
-
-export default (...args) => svg('path', ...args);
