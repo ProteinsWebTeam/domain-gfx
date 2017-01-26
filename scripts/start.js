@@ -13,32 +13,34 @@ let cache;
 const dest = path.resolve('demo', 'lib.js');
 
 const generateBundle = async () => {
-  const bundle = await rollup.rollup({
-    entry: path.resolve('src', 'index.js'),
-    cache,
-    plugins: [
-      babel({
-        presets: [
-          'stage-2',
-        ],
-      }),
-      nodeResolve({
-        module: true,
-        jsnext: true,
-        main: true,
-        browser: true,
-      })
-    ],
-  });
-
-  cache = bundle;
-
-  await bundle.write({
-    format: 'iife',
-    moduleName: 'DomainGfx',
-    sourceMap: true,
-    dest,
-  });
+  try {
+    const bundle = await rollup.rollup({
+      entry: path.resolve('src', 'index.js'),
+      cache,
+      plugins: [
+        babel({
+          presets: [
+            'stage-2',
+          ],
+        }),
+        nodeResolve({
+          module: true,
+          jsnext: true,
+          main: true,
+          browser: true,
+        })
+      ],
+    });
+    cache = bundle;
+    await bundle.write({
+      format: 'iife',
+      moduleName: 'DomainGfx',
+      sourceMap: 'inline',
+      dest,
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 let build = generateBundle();
@@ -59,7 +61,6 @@ console.log(
 const cleanup = (code = 0, err) => {
   try {
     fs.unlinkSync(dest);
-    fs.unlinkSync(`${dest}.map`);
     if (err) throw err;
     process.exit(code);
     return;
