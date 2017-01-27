@@ -17,7 +17,6 @@ export default class SvgRenderer {
     this._canvas = svg({width, height, viewBox: `0 0 ${width} ${height}`});
     this._canvas.style.width = `${width * 2}px`;
     this._canvas.style.height = `${height * 2}px`;
-    window.renderer = this;
   }
 
   get canvas () {
@@ -25,8 +24,6 @@ export default class SvgRenderer {
   }
 
   drawMarkup = (m, residueWidth, previousNestedMarkups) => {
-    console.log('drawing markup');
-    console.table(m);
     if (m.end && !Number.isFinite(m.level)) {
       const availableLevels = new Set([0, 1, -1]);
       for (const previous of previousNestedMarkups) {
@@ -53,7 +50,7 @@ export default class SvgRenderer {
         position: {x: 0, y: -2.5},
         length,
         height: 5,
-        color: '#D8D8D8',
+        color: '#d8d8d8',
       })
     );
     g.dataset.entity = 'sequence';
@@ -61,8 +58,6 @@ export default class SvgRenderer {
   };
 
   drawRegion = (region, residueWidth) => {
-    console.log('drawing region');
-    console.table(region);
     const g = group(
       {transform: `translate(${region.start * residueWidth}, 5)`},
       domain(region, residueWidth)
@@ -80,15 +75,13 @@ export default class SvgRenderer {
   };
 
   drawMotif = (m, residueWidth) => {
-    console.log('drawing motif');
-    console.table(m);
     const g = group(
       {transform: `translate(${m.start * residueWidth}, 6)`},
       motif({
         position: {x: 0, y: 0},
         length: (m.end - m.start) * residueWidth,
         height: 8,
-        color: m.color || m.colour,
+        color: m.color,
       })
     );
     g.dataset.entity = 'motif';

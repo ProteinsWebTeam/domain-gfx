@@ -1,6 +1,5 @@
 /* globals DomainGfx: false */
 {
-  console.log('library ready');
   // Example 1
   const data1 = {
     length: 400,
@@ -33,6 +32,7 @@
   };
   const cont1 = document.getElementById('1');
   const domainGfx1 = new DomainGfx({parent: cont1, data: data1});
+  console.log(domainGfx1._data);
   domainGfx1.render();
 
   // Example 2

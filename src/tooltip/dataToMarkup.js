@@ -22,7 +22,7 @@ export default (data/*: Object */) => {
         <span class="alignment" style="
           width: ${(aliEnd - aliStart) * 100 / length}px;
           margin-left: ${offset}px;
-          background-color: ${_data.color || _data.colour};
+          background-color: ${_data.color};
         "></span>
       </span>${_data.end}
     `;

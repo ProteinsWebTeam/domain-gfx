@@ -72,18 +72,18 @@ class TooltipManager {
     });
   }
 
+  // promote to own grpahic accelerated layer
   _promoteTarget = canvas => ({target}/*: {target: Element}*/) => {
     if (target !== canvas || this._promoted) return;
-    console.log('promoting tooltip');
     this._container.style.willChange = 'transform';
   };
 
+  // demote from own graphic accelerated layer
   _demoteTarget = canvas => (
     {target, relatedTarget}/*: {target: Element, relatedTarget: Element}*/
   ) => {
     if (target !== canvas || !this._promoted) return;
     if (relatedTarget && relatedTarget === this._container) return;
-    console.log('demoting tooltip');
     this._container.style.willChange = '';
   };
 
@@ -111,10 +111,7 @@ class TooltipManager {
     const data = e.target[ns];
     if (this._currentData === data || !(this._currentData || data)) return;
     this._currentData = data;
-    // console.log(e);
-    console.log('new data', data);
     this._replaceTooltipContent(data);
-    console.log('displaying tooltip');
     this._display(findBestTooltipPosition(
       getEntityBBox(e.target),
       this._container.getBoundingClientRect()
@@ -131,7 +128,6 @@ class TooltipManager {
     if (relatedData) {
       // switch tooltip content
       let data = relatedData;
-      console.log('new data', data);
       this._replaceTooltipContent(data);
       this._display(findBestTooltipPosition(
         getEntityBBox(e.relatedTarget),
@@ -139,7 +135,6 @@ class TooltipManager {
       ));
     } else {
       // hide tooltip
-      console.log('hiding tooltip');
       this._hide();
     }
   };
@@ -158,7 +153,6 @@ let tooltipManager;
 export default () => {
   if (!tooltipManager) {
     tooltipManager = new TooltipManager();
-    window.ttm = tooltipManager;
   }
   return tooltipManager;
 };

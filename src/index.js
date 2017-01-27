@@ -3,12 +3,13 @@ import merge from 'lodash-es/merge';
 import getTooltipManager from './tooltip/tooltip';
 import SvgRenderer from './renderer/svg';
 import getDefaults from './defaults';
+import sanitize from './utils/sanitizer';
 
 const isHidden = ({hidden, display = true}) => hidden || !display;
 
 export default class DomainGFX {
   constructor ({data = {}, parent, params = {}} = {}) {
-    this._data = data;
+    this._data = sanitize(data);
     this._parent = parent;
     this._params = merge({}, getDefaults(), params);
     this._canvas = this._createCanvas();
@@ -23,7 +24,6 @@ export default class DomainGFX {
   }
 
   _draw = () => {
-    console.log('drawing');
     // draw markups
     const markups = (this._data.markups || [])
       .sort((a, b) => a.start - b.start);
@@ -64,12 +64,8 @@ export default class DomainGFX {
   };
 
   render = () => {
-    console.log(this);
     this._parent.appendChild(this._canvas);
     this._draw();
-    // console.log(this._data);
-    // console.log(this._parent);
-    // console.log(this._options);
   };
 }
 

@@ -62,7 +62,7 @@ const domainBottomLine = length => horizontalLine(-length);
 
 const domain = ({
   start, end, startStyle, endStyle,
-  color, colour, gradient,
+  color, gradient,
   residueWidth, mask
 }) => {
   const length = (end - start) * residueWidth;
@@ -73,9 +73,9 @@ const domain = ({
     .add(domainBottomLine(topBottomLength))
     .add(domainStart(startStyle))
     .close();
-  // return path({d, fill: gradient, stroke: color || colour, mask});
+  // return path({d, fill: gradient, stroke: color, mask});
   // return path({d, fill: gradient, mask});
-  return path({d, fill: color || colour, mask});
+  return path({d, fill: color, mask});
 };
 
 const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
@@ -133,7 +133,7 @@ const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
 // };
 
 export default (
-  {start, aliStart, aliEnd, end, startStyle, endStyle, color, colour, text},
+  {start, aliStart, aliEnd, end, startStyle, endStyle, color, text},
   residueWidth
 ) => {
   const {maskId, maskElement} = envelope(
@@ -143,7 +143,7 @@ export default (
       residueWidth,
     }
   );
-  // const {gradientId, gradientElement} = grad({color, colour});
+  // const {gradientId, gradientElement} = grad({color});
   const textElement = textEl(
     {
       x: ((end - start) * residueWidth) / 2, y: height * 0.75,
@@ -161,8 +161,7 @@ export default (
     defs(null, maskElement/*, gradientElement*/),
     domain({
       start, end, startStyle, endStyle, residueWidth,
-      color, colour,
-      mask: `url(#${maskId})`,
+      color, mask: `url(#${maskId})`,
       // gradient: `url(#${gradientId})`,
     }),
     text && textElement

@@ -91,7 +91,7 @@ const buildHead = ({style, color, isOnTop}) => {
 export default (
   {
     start, end, v_align, vAlign, level = 0,
-    lineColor, lineColour, headColor, headColour, color, colour,
+    lineColor, headColor, color,
     headStyle
   },
   residueWidth
@@ -106,7 +106,6 @@ export default (
       .add(verticalLine(((1.5 * level) + offset) * (isOnTop ? 1 : -1)));
   }
   d = d.finish();
-  console.log({level});
   return group(
     null,
     path({
@@ -114,13 +113,13 @@ export default (
       // if lineColor is defined, use that
       // if it has a end, it is nested, so the color is the line's color
       // otherwise just default to black
-      stroke: lineColor || lineColour || (end && color || colour) || 'black'
+      stroke: lineColor || (end && color) || 'black'
     }),
     !end && buildHead({
       // if headColor is defined, use that
       // if it has no end, it is not nested, so the color is the head's color
       // otherwise just default to black
-      color: headColor || headColour || (!end && color || colour) || 'black',
+      color: headColor || (!end && color) || 'black',
       style: headStyle,
       isOnTop,
     })
