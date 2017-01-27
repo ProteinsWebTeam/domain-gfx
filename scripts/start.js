@@ -6,10 +6,12 @@ const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const watch = require('watch');
+const chalk = require('chalk');
 const debounce = require('lodash.debounce');
 const livereload = require('livereload');
 
 let cache;
+let failing = false;
 const dest = path.resolve('demo', 'lib.js');
 
 const generateBundle = async () => {
@@ -19,9 +21,8 @@ const generateBundle = async () => {
       cache,
       plugins: [
         babel({
-          presets: [
-            'stage-2',
-          ],
+          presets: ['stage-2'],
+          plugins: ['external-helpers'],
         }),
         nodeResolve({
           module: true,
@@ -38,12 +39,23 @@ const generateBundle = async () => {
       sourceMap: 'inline',
       dest,
     });
+    if (failing) {
+      console.log(chalk.green.bold('back to normal ✔'));
+      failing = false;
+    }
   } catch (err) {
+    if (failing) {
+      console.error(chalk.red('still failing ✘'));
+    } else {
+      console.error(chalk.red.bold('now failing ✘'));
+    }
     console.error(err);
+    failing = true;
   }
 };
 
-let build = generateBundle();
+let build = generateBundle()
+  .then(() => console.log(chalk.green('build successful ✔')));
 
 watch.watchTree(path.resolve('src'), debounce(async () => {
   await build;
@@ -53,9 +65,9 @@ watch.watchTree(path.resolve('src'), debounce(async () => {
 const lrServer = livereload.createServer();
 lrServer.watch(path.resolve('demo'));
 
-console.log(
+console.log(chalk.blue(
   `open your browser at file://${path.resolve('demo', 'index.html')}`
-);
+));
 
 // Clean-up logic
 const cleanup = (code = 0, err) => {
