@@ -1,5 +1,5 @@
 // @flow
-const namespace = 'http://www.w3.org/2000/svg';
+const svgNamespace = 'http://www.w3.org/2000/svg';
 
 /*::
   type Attributes = {[key: string]: number | string};
@@ -11,7 +11,7 @@ const _svg = (name/*: string */) => (
   ...children/*: Array<Child> */
 ) => {
   // Create element
-  const element = document.createElementNS(namespace, name);
+  const element = document.createElementNS(svgNamespace, name);
   // Set attributes
   for (const [attribute, value] of Object.entries(attributes || {})) {
     if (value || value === 0) {
@@ -28,6 +28,8 @@ const _svg = (name/*: string */) => (
   //
   return element;
 };
+
+export default _svg;
 
 export const svg = _svg('svg');
 
