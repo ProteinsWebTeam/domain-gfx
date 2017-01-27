@@ -14,11 +14,9 @@ export default (
    gradient: ?boolean,
    } */
 ) => {
-  const basicAttributes = {
-    x, y, width, height, fill: color || 'gray', opacity: motifOpacity
-  };
+  const basicAttributes = {x, y, width, height, opacity: motifOpacity};
   if (!Array.isArray(color)) {
-    return rectangle(basicAttributes);
+    return rectangle({...basicAttributes, fill: color || 'gray'});
   }
   const {gradientId, gradientElement} = gradientMaker(color, gradient);
   return group(

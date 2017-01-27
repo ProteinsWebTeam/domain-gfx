@@ -1,3 +1,4 @@
+// @flow
 import uniqueId from '../../../utils/uniqueId';
 import {gradient, stop} from '../svg';
 

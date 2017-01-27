@@ -7,7 +7,7 @@ const svgNamespace = 'http://www.w3.org/2000/svg';
 */
 
 const _svg = (name/*: string */) => (
-  attributes/*: Attributes */ = {},
+  attributes/*: ?Attributes */,
   ...children/*: Array<Child> */
 ) => {
   // Create element
