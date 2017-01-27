@@ -82,6 +82,7 @@ export default class SvgRenderer {
         length: (m.end - m.start) * residueWidth,
         height: 8,
         color: m.color,
+        gradient: m.gradient,
       })
     );
     g.dataset.entity = 'motif';

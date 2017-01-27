@@ -47,4 +47,6 @@ export const path = _svg('path');
 
 export const rectangle = _svg('rect');
 
+export const stop = _svg('stop');
+
 export const text = _svg('text');

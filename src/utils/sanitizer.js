@@ -1,7 +1,8 @@
 // @flow
-const keyNumbers = new Set(
-  ['length', 'start', 'end', 'aliStart', 'aliEnd', 'level']
-);
+const keyNumbers = new Set([
+  'start', 'end', 'aliStart', 'aliEnd', 'modelStart', 'modelEnd',
+  'length', 'level'
+]);
 const colour = /(^.*colo)u(r.*$)/i;
 const falseString = /^f(alse)?$/i;
 

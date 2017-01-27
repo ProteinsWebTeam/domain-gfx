@@ -1,5 +1,6 @@
 import PathData from '../utils/pathData';
 import {path, rectangle, defs, group, mask, text as textEl} from '../svg';
+import gradientMaker from '../utils/gradient';
 import uniqueId from '../../../utils/uniqueId';
 
 const height = 10;
@@ -61,8 +62,7 @@ const domainTopLine = length => horizontalLine(length);
 const domainBottomLine = length => horizontalLine(-length);
 
 const domain = ({
-  start, end, startStyle, endStyle,
-  color, gradient,
+  start, end, startStyle, endStyle, fill,
   residueWidth, mask
 }) => {
   const length = (end - start) * residueWidth;
@@ -73,9 +73,7 @@ const domain = ({
     .add(domainBottomLine(topBottomLength))
     .add(domainStart(startStyle))
     .close();
-  // return path({d, fill: gradient, stroke: color, mask});
-  // return path({d, fill: gradient, mask});
-  return path({d, fill: color, mask});
+  return path({d, fill, mask});
 };
 
 const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
@@ -116,24 +114,8 @@ const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
   };
 };
 
-// const grad = ({color, colour}) => {
-//   const _color = color || colour;
-//   const gradientId = uniqueId();
-//   return {
-//     gradientId,
-//     gradientElement: gradient(
-//       'linear',
-//       {id: gradientId, x1: 0, x2: 0, y1: 0, y2: 1},// top to bottom
-//       svg('stop', {offset: '0%', 'stop-color': '#fff'}),
-//       svg('stop', {offset: '40%', 'stop-color': _color}),
-//       svg('stop', {offset: '50%', 'stop-color': _color}),
-//       svg('stop', {offset: '100%', 'stop-color': '#fff'})
-//     ),
-//   };
-// };
-
 export default (
-  {start, aliStart, aliEnd, end, startStyle, endStyle, color, text},
+  {start, aliStart, aliEnd, end, startStyle, endStyle, color, text, gradient},
   residueWidth
 ) => {
   const {maskId, maskElement} = envelope(
@@ -143,14 +125,19 @@ export default (
       residueWidth,
     }
   );
-  // const {gradientId, gradientElement} = grad({color});
+  let fill = color;
+  let gradientObj = {};
+  if (Array.isArray(color)) {
+    gradientObj = gradientMaker(color, gradient);
+    fill = `url(#${gradientObj.gradientId})`
+  }
   const textElement = textEl(
     {
       x: ((end - start) * residueWidth) / 2, y: height * 0.75,
       'text-anchor': 'middle',
       'font-size': 7.5,
       'font-family': 'Sans-Serif',
-      'fill': '#000',
+      fill: '#000',
       opacity: 0,
     },
     text
@@ -158,11 +145,10 @@ export default (
   textElement.dataset.maxwidth = (end - start) * residueWidth;
   return group(
     null,
-    defs(null, maskElement/*, gradientElement*/),
+    defs(null, maskElement, gradientObj.gradientElement),
     domain({
       start, end, startStyle, endStyle, residueWidth,
-      color, mask: `url(#${maskId})`,
-      // gradient: `url(#${gradientId})`,
+      fill, mask: `url(#${maskId})`,
     }),
     text && textElement
   );

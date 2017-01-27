@@ -778,6 +778,22 @@
         display: false,
         end: 831,
         start: 822
+      },
+      {
+        colour: ['#ff7ff0', '#f2ff7f', '#7ff2ff'],
+        href: '/pfamb/PB075017',
+        type: 'pfamb',
+        metadata: {
+          database: 'pfam',
+          identifier: 'Pfam-B_75017',
+          type: 'Pfam-B',
+          start: 791,
+          end: 949,
+          accession: 'PB075017'
+        },
+        start: 791,
+        end: 949,
+        display: true
       }
     ]
   };
