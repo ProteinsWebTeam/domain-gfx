@@ -3274,9 +3274,6 @@ function debounce(func, wait, options) {
 
     // Render function
     const updateView = function (cm) {
-      if (dg) {
-        dg.delete();
-      }
       const text = cm.getValue();
       let data;
       try {
@@ -3285,6 +3282,9 @@ function debounce(func, wait, options) {
         invalid.classList.remove('hidden');
         console.error(err);
         return;
+      }
+      if (dg) {
+        dg.delete();
       }
       invalid.classList.add('hidden');
       dg = new DomainGFX({ parent: visu, data });

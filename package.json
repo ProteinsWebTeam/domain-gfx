@@ -61,7 +61,7 @@
     "test:lint": "eslint --color --ignore-path .gitignore \"./**/*.js\" --ignore-pattern demo",
     "test:flow": "flow check",
     "test:jest": "NODE_PATH=$NODE_PATH:./src node --harmony-async-await $(npm bin)/jest",
-    "publish:demo": "npm run build:demo && git subtree push --prefix demo origin gh-pages"
+    "publish:demo": "git subtree push --prefix demo origin gh-pages"
   },
   "keywords": [
     "domain",

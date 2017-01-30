@@ -13,9 +13,6 @@ import debounce from 'lodash-es/debounce';
 
   // Render function
   const updateView = cm => {
-    if (dg) {
-      dg.delete();
-    }
     const text = cm.getValue();
     let data;
     try {
@@ -24,6 +21,9 @@ import debounce from 'lodash-es/debounce';
       invalid.classList.remove('hidden');
       console.error(err);
       return;
+    }
+    if (dg) {
+      dg.delete();
     }
     invalid.classList.add('hidden');
     dg = new DomainGfx({parent: visu, data});
