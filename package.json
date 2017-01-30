@@ -58,7 +58,7 @@
     "build:demo": "node --harmony-async-await scripts/demo.js",
     "start": "node --harmony-async-await scripts/start.js",
     "test": "npm run test:lint && npm run test:flow && npm run test:jest",
-    "test:lint": "eslint --color --ignore-path .gitignore \"./**/*.js\"",
+    "test:lint": "eslint --color --ignore-path .gitignore \"./**/*.js\" --ignore-pattern demo",
     "test:flow": "flow check",
     "test:jest": "NODE_PATH=$NODE_PATH:./src node --harmony-async-await $(npm bin)/jest",
     "publish:demo": "npm run build:demo && git subtree push --prefix demo origin gh-pages"

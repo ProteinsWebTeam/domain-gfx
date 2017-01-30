@@ -73,7 +73,7 @@ class TooltipManager {
     });
   }
 
-  // promote to own grpahic accelerated layer
+  // promote to own graphic accelerated layer
   _promoteTarget = canvas => ({target}/*: {target: Element}*/) => {
     if (target !== canvas || this._promoted) return;
     this._container.style.willChange = 'transform';

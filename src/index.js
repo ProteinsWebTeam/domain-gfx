@@ -64,11 +64,11 @@ export default class DomainGFX {
     return this._renderer.canvas;
   };
 
-  get data() {
+  get data () {
     return this._data;
   }
 
-  set data(value) {
+  set data (value) {
     this._data = sanitize(value);
     const prevCanvas = this._canvas;
     this._canvas = this._createCanvas();
@@ -77,7 +77,13 @@ export default class DomainGFX {
 
   render = () => {
     this._draw();
-  };
+  }
+
+  delete = () => {
+    // clean-up logic
+    this._parent.removeChild(this._canvas);
+    this._canvas = this._parent = null;
+  }
 }
 
 // Dispatches event on document when library has loaded

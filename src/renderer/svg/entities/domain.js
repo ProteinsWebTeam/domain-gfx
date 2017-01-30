@@ -129,7 +129,7 @@ export default (
   let gradientObj = {};
   if (Array.isArray(color)) {
     gradientObj = gradientMaker(color, gradient);
-    fill = `url(#${gradientObj.gradientId})`
+    fill = `url(#${gradientObj.gradientId})`;
   }
   const textElement = textEl(
     {

@@ -10,7 +10,8 @@ export default (
   font-family: Sans-Serif;
 }
 .${className}.hidden {
-  opacity: 0.5;
+  display: block;
+  opacity: 0;
   transform: translate(-999px, -999px);
   transform: translate(200vw, 200vh);
 }
