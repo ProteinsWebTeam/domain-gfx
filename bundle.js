@@ -2047,7 +2047,8 @@ var getStyleSheet = (({ className, acceptedMargin }
   font-family: Sans-Serif;
 }
 .${ className }.hidden {
-  opacity: 0.5;
+  display: block;
+  opacity: 0;
   transform: translate(-999px, -999px);
   transform: translate(200vw, 200vh);
 }
@@ -2343,7 +2344,7 @@ class TooltipManager {
     });
   }
 
-  // promote to own grpahic accelerated layer
+  // promote to own graphic accelerated layer
 
 
   // demote from own graphic accelerated layer
@@ -2936,6 +2937,12 @@ class DomainGFX {
       this._draw();
     };
 
+    this.delete = () => {
+      // clean-up logic
+      this._parent.removeChild(this._canvas);
+      this._canvas = this._parent = null;
+    };
+
     this._data = sanitizer(data);
     this._parent = parent;
     this._params = merge({}, getDefaults(), params);
@@ -3255,44 +3262,48 @@ function debounce(func, wait, options) {
 }
 
 /* globals CodeMirror: false */
-asyncToGenerator(function* () {
-  // Fires the fetch request at the beginning
-  const jsonFileContent = fetch('data.json').then(function (r) {
-    return r.text();
+(() => {
+  var _ref = asyncToGenerator(function* (jsonFileContent) {
+    // DOM elements
+    const textArea = document.querySelector('.data textarea');
+    const visu = document.querySelector('.visu');
+    const invalid = document.querySelector('.invalid');
+
+    // Domain graphics
+    let dg;
+
+    // Render function
+    const updateView = function (cm) {
+      if (dg) {
+        dg.delete();
+      }
+      const text = cm.getValue();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        invalid.classList.remove('hidden');
+        console.error(err);
+        return;
+      }
+      invalid.classList.add('hidden');
+      dg = new DomainGFX({ parent: visu, data });
+      dg.render();
+    };
+
+    // CodeMirror logic
+    textArea.value = yield jsonFileContent;
+    const cm = CodeMirror.fromTextArea(textArea, { lineNumbers: true });
+    cm.on('change', debounce(updateView, 1000));
+
+    // Kicks off first render
+    updateView(cm);
   });
 
-  // DOM elements
-  const textArea = document.querySelector('.data textarea');
-  const visu = document.querySelector('.visu');
-  const invalid = document.querySelector('.invalid');
-
-  // Domain graphics
-  const dg = new DomainGFX({ parent: visu });
-
-  // Render function
-  const updateView = function (cm) {
-    const text = cm.getValue();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (err) {
-      invalid.classList.remove('hidden');
-      console.error(err);
-      return;
-    }
-    invalid.classList.add('hidden');
-    dg.data = data;
-    dg.render();
+  return function (_x) {
+    return _ref.apply(this, arguments);
   };
-
-  // CodeMirror logic
-  textArea.value = yield jsonFileContent;
-  const cm = CodeMirror.fromTextArea(textArea, { lineNumbers: true });
-  cm.on('change', debounce(updateView, 1000));
-
-  // Kicks off first render
-  updateView(cm);
-})();
+})()(fetch('data.json').then(r => r.text()));
 
 }());
 //# sourceMappingURL=bundle.js.map

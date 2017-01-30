@@ -1,21 +1,21 @@
 /* globals CodeMirror: false */
-import DomainGraphics from '../src/index.js';
+import DomainGfx from '../src/index.js';
 import debounce from 'lodash-es/debounce';
 
-(async () => {
-  // Fires the fetch request at the beginning
-  const jsonFileContent = fetch('data.json').then(r => r.text());
-
+(async (jsonFileContent) => {
   // DOM elements
   const textArea = document.querySelector('.data textarea');
   const visu = document.querySelector('.visu');
   const invalid = document.querySelector('.invalid');
 
   // Domain graphics
-  const dg = new DomainGraphics({parent: visu});
+  let dg;
 
   // Render function
   const updateView = cm => {
+    if (dg) {
+      dg.delete();
+    }
     const text = cm.getValue();
     let data;
     try {
@@ -26,7 +26,7 @@ import debounce from 'lodash-es/debounce';
       return;
     }
     invalid.classList.add('hidden');
-    dg.data = data;
+    dg = new DomainGfx({parent: visu, data});
     dg.render();
   };
 
@@ -37,4 +37,4 @@ import debounce from 'lodash-es/debounce';
 
   // Kicks off first render
   updateView(cm);
-})();
+})(fetch('data.json').then(r => r.text()));
