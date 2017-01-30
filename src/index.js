@@ -13,9 +13,10 @@ export default class DomainGFX {
     this._parent = parent;
     this._params = merge({}, getDefaults(), params);
     this._canvas = this._createCanvas();
+    this._parent.appendChild(this._canvas);
   }
 
-  _computeWidth ({length}, {image: {width, sequenceEndPadding}}) {
+  _computeWidth ({length = 0}, {image: {width, sequenceEndPadding}}) {
     return length * width.residue + sequenceEndPadding;
   }
 
@@ -63,8 +64,18 @@ export default class DomainGFX {
     return this._renderer.canvas;
   };
 
+  get data() {
+    return this._data;
+  }
+
+  set data(value) {
+    this._data = sanitize(value);
+    const prevCanvas = this._canvas;
+    this._canvas = this._createCanvas();
+    this._parent.replaceChild(this._canvas, prevCanvas);
+  }
+
   render = () => {
-    this._parent.appendChild(this._canvas);
     this._draw();
   };
 }

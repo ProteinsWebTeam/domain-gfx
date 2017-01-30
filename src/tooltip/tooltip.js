@@ -24,7 +24,8 @@ const findBestTooltipPosition = (
     x = Math.min(x, window.innerWidth - tooltipBBox.width);// right overflow
   }
   const y = entityBBox.top - tooltipBBox.height;
-  return {x, y};
+  // Rounding, otherwise will be blurred if not pixel aligned
+  return {x: Math.round(x), y: Math.round(y)};
 };
 
 const buildTooltipContent = (html/*: string */) => {
