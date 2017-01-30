@@ -12,7 +12,7 @@ const livereload = require('livereload');
 
 let cache;
 let failing = false;
-const dest = path.resolve('demo', 'lib.js');
+const dest = path.resolve('dev_demo', 'lib.js');
 
 const generateBundle = async () => {
   try {
@@ -63,10 +63,10 @@ watch.watchTree(path.resolve('src'), debounce(async () => {
 }, 1000));
 
 const lrServer = livereload.createServer();
-lrServer.watch(path.resolve('demo'));
+lrServer.watch(path.resolve('dev_demo'));
 
 console.log(chalk.blue(
-  `open your browser at file://${path.resolve('demo', 'index.html')}`
+  `open your browser at file://${path.resolve('dev_demo', 'index.html')}`
 ));
 
 // Clean-up logic

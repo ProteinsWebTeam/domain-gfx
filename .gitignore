@@ -2,4 +2,4 @@
 dist
 node_modules
 npm-debug.log
-demo/lib.js
+dev_demo/lib.js
