@@ -67,9 +67,21 @@ class TooltipManager {
     if (!document.head) throw new Error('No head in document');
     document.head.appendChild(getStyleSheet({className, acceptedMargin}));
     // add event listener to the tooltip itself
-    cont.addEventListener('mouseleave', () => {
-      this._currentData = null;
-      this._hide();
+    cont.addEventListener('mouseleave', e => {
+      const relatedData = e.relatedTarget[ns];
+      if (relatedData === this._currentData) return;// enter part of same entity
+      this._currentData = relatedData || null;
+      if (relatedData) {
+        // switch tooltip content
+        this._replaceTooltipContent(relatedData);
+        this._display(findBestTooltipPosition(
+          getEntityBBox(e.relatedTarget),
+          this._container.getBoundingClientRect()
+        ));
+      } else {
+        // hide tooltip
+        this._hide();
+      }
     });
   }
 
@@ -98,7 +110,7 @@ class TooltipManager {
 
   _hide = () => {
     this._container.classList.add('hidden');
-    this._container.style.transform = '';
+    this._visible = false;
   };
 
   _display = ({x, y}) => {
@@ -120,7 +132,7 @@ class TooltipManager {
   };
 
   _handleMouseOut = (e/*: MouseEvent */) => {
-    let data = e.target[ns];
+    const data = e.target[ns];
     if (!data) return;
     if (e.relatedTarget === this._container) return;
     const relatedData = e.relatedTarget[ns];
@@ -128,8 +140,7 @@ class TooltipManager {
     this._currentData = relatedData || null;
     if (relatedData) {
       // switch tooltip content
-      let data = relatedData;
-      this._replaceTooltipContent(data);
+      this._replaceTooltipContent(relatedData);
       this._display(findBestTooltipPosition(
         getEntityBBox(e.relatedTarget),
         this._container.getBoundingClientRect()
@@ -141,11 +152,20 @@ class TooltipManager {
   };
 
   attachToCanvas (canvas/*: Element */) {
-    canvas.addEventListener('mouseenter', this._promoteTarget(canvas));
-    canvas.addEventListener('mouseleave', this._demoteTarget(canvas));
+    const promote = this._promoteTarget(canvas);
+    const demote = this._demoteTarget(canvas);
+    canvas.addEventListener('mouseenter', promote);
+    canvas.addEventListener('mouseleave', demote);
     canvas.addEventListener('mouseover', this._handleMouseOver);
     canvas.addEventListener('mousemove', this._handleMouseOver);// not a typo
     canvas.addEventListener('mouseout', this._handleMouseOut);
+    return () => {
+      canvas.removeEventListener('mouseenter', promote);
+      canvas.removeEventListener('mouseleave', demote);
+      canvas.removeEventListener('mouseover', this._handleMouseOver);
+      canvas.removeEventListener('mousemove', this._handleMouseOver);
+      canvas.removeEventListener('mouseout', this._handleMouseOut);
+    };
   }
 }
 

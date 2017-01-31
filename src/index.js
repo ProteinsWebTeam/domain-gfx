@@ -14,6 +14,7 @@ export default class DomainGFX {
     this._params = merge({}, getDefaults(), params);
     this._canvas = this._createCanvas();
     this._parent.appendChild(this._canvas);
+    this._draw();
   }
 
   _computeWidth ({length = 0}, {image: {width, sequenceEndPadding}}) {
@@ -29,6 +30,7 @@ export default class DomainGFX {
     const markups = (this._data.markups || [])
       .sort((a, b) => a.start - b.start);
     const nestedMarkups = [];
+    let needsTooltips = false;
     for (const markup of markups) {
       if (isHidden(markup)) continue;
       this._renderer.drawMarkup(
@@ -36,6 +38,7 @@ export default class DomainGFX {
         this._params.image.width.residue,
         nestedMarkups
       );
+      needsTooltips |= !!(markup.tooltip || markup.metadata);
       if (markup.end) nestedMarkups.push(markup);
     }
     // draw sequence
@@ -46,14 +49,20 @@ export default class DomainGFX {
     for (const region of this._data.regions || []) {
       if (isHidden(region)) continue;
       this._renderer.drawRegion(region, this._params.image.width.residue);
+      needsTooltips |= !!(region.tooltip || region.metadata);
     }
     // draw motifs
     for (const motif of this._data.motifs || []) {
       if (isHidden(motif)) continue;
       this._renderer.drawMotif(motif, this._params.image.width.residue);
+      needsTooltips |= !!(motif.tooltip || motif.metadata);
     }
     // connect tooltip logic
-    getTooltipManager().attachToCanvas(this._renderer.canvas);
+    if (needsTooltips) {
+      this._detach = (
+        getTooltipManager().attachToCanvas(this._renderer.canvas)
+      );
+    }
   };
 
   _createCanvas = () => {
@@ -73,15 +82,18 @@ export default class DomainGFX {
     const prevCanvas = this._canvas;
     this._canvas = this._createCanvas();
     this._parent.replaceChild(this._canvas, prevCanvas);
-  }
-
-  render = () => {
     this._draw();
   }
 
   delete = () => {
+    // unsubscribe to mouse events
+    if (this._detach) {
+      this._detach();
+      this._detach = null;
+    }
     // clean-up logic
     this._parent.removeChild(this._canvas);
+    // remove references to DOM
     this._canvas = this._parent = null;
   }
 }

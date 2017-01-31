@@ -1,4 +1,5 @@
 /* globals DomainGfx: false */
+/* eslint no-new: off */
 {
   // Example 1
   const data1 = {
@@ -31,9 +32,7 @@
     ],
   };
   const cont1 = document.getElementById('1');
-  const domainGfx1 = new DomainGfx({parent: cont1, data: data1});
-  console.log(domainGfx1._data);
-  domainGfx1.render();
+  new DomainGfx({parent: cont1, data: data1});
 
   // Example 2
   const data2 = {
@@ -72,8 +71,7 @@
     ]
   };
   const cont2 = document.getElementById('2');
-  const domainGfx2 = new DomainGfx({parent: cont2, data: data2});
-  domainGfx2.render();
+  new DomainGfx({parent: cont2, data: data2});
 
   // Example 3
   const data3 = {
@@ -122,8 +120,7 @@
     ]
   };
   const cont3 = document.getElementById('3');
-  const domainGfx3 = new DomainGfx({parent: cont3, data: data3});
-  domainGfx3.render();
+  new DomainGfx({parent: cont3, data: data3});
 
   // Example 4
   const data4 = {
@@ -172,8 +169,7 @@
     ]
   };
   const cont4 = document.getElementById('4');
-  const domainGfx4 = new DomainGfx({parent: cont4, data: data4});
-  domainGfx4.render();
+  new DomainGfx({parent: cont4, data: data4});
 
   // Example 5
   const data5 = {
@@ -224,8 +220,7 @@
     ]
   };
   const cont5 = document.getElementById('5');
-  const domainGfx5 = new DomainGfx({parent: cont5, data: data5});
-  domainGfx5.render();
+  new DomainGfx({parent: cont5, data: data5});
 
   // Example 6
   const data6 = {
@@ -386,8 +381,7 @@
     ]
   };
   const cont6 = document.getElementById('6');
-  const domainGfx6 = new DomainGfx({parent: cont6, data: data6});
-  domainGfx6.render();
+  new DomainGfx({parent: cont6, data: data6});
 
   // Example 7
   const data7 = {
@@ -459,8 +453,7 @@
     ]
   };
   const cont7 = document.getElementById('7');
-  const domainGfx7 = new DomainGfx({parent: cont7, data: data7});
-  domainGfx7.render();
+  new DomainGfx({parent: cont7, data: data7});
 
   // Example 8
   const data8 = {
@@ -798,6 +791,5 @@
     ]
   };
   const cont8 = document.getElementById('8');
-  const domainGfx8 = new DomainGfx({parent: cont8, data: data8});
-  domainGfx8.render();
+  new DomainGfx({parent: cont8, data: data8});
 }

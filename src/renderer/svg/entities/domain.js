@@ -1,5 +1,5 @@
 import PathData from '../utils/pathData';
-import {path, rectangle, defs, group, mask, text as textEl} from '../svg';
+import svg, {path, rectangle, defs, group, mask, text as textEl} from '../svg';
 import gradientMaker from '../utils/gradient';
 import uniqueId from '../../../utils/uniqueId';
 
@@ -63,7 +63,7 @@ const domainBottomLine = length => horizontalLine(-length);
 
 const domain = ({
   start, end, startStyle, endStyle, fill,
-  residueWidth, mask
+  residueWidth, mask, filter,
 }) => {
   const length = (end - start) * residueWidth;
   const topBottomLength = length - (2 * radius);
@@ -73,7 +73,7 @@ const domain = ({
     .add(domainBottomLine(topBottomLength))
     .add(domainStart(startStyle))
     .close();
-  return path({d, fill, mask});
+  return path({d, fill, mask, filter});
 };
 
 const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
@@ -133,7 +133,7 @@ export default (
   }
   const textElement = textEl(
     {
-      x: ((end - start) * residueWidth) / 2, y: height * 0.75,
+      x: ((end - start) * residueWidth) / 2, y: height * 0.75 + 0.5,
       'text-anchor': 'middle',
       'font-size': 7.5,
       'font-family': 'Sans-Serif',
@@ -145,10 +145,34 @@ export default (
   textElement.dataset.maxwidth = (end - start) * residueWidth;
   return group(
     null,
-    defs(null, maskElement, gradientObj.gradientElement),
+    defs(
+      null,
+      maskElement,
+      gradientObj.gradientElement,
+      svg('filter')(
+        {
+          id: 'filter', filterUnits: 'objectBoundingBox',
+          x: -0.1, y: -0.1, width: 5, height: 5
+        },
+        svg('feGaussianBlur')(
+          {in: 'SourceAlpha', stdDeviation: 1, result: 'alpha_blur'}
+        ),
+        svg('feSpecularLighting')(
+          {
+            in: 'alpha_blur', surfaceScale: 5, specularConstant: 1.5,
+            specularExponent: 12, 'lighting-color': '#ddd', result: 'light'
+          },
+          svg('fePointLight')(
+            {x: -100, y: -200, z: 100}
+          )
+        ),
+        svg('feComposite')(
+          {in: 'SourceGraphic', in2: 'light', operator: 'out'}
+        )
+    )),
     domain({
       start, end, startStyle, endStyle, residueWidth,
-      fill, mask: `url(#${maskId})`,
+      fill, mask: `url(#${maskId})`, filter: 'url(#filter)',
     }),
     text && textElement
   );

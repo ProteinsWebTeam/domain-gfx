@@ -10,6 +10,7 @@ export default (
   font-family: Sans-Serif;
 }
 .${className}.hidden {
+  pointer-events: none;
   display: block;
   opacity: 0;
   transform: translate(-999px, -999px);

@@ -23,11 +23,11 @@ import debounce from 'lodash-es/debounce';
       return;
     }
     if (dg) {
-      dg.delete();
+      dg.data = data;
+    } else {
+      dg = new DomainGfx({parent: visu, data});
     }
     invalid.classList.add('hidden');
-    dg = new DomainGfx({parent: visu, data});
-    dg.render();
   };
 
   // CodeMirror logic
