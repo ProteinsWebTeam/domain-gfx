@@ -2047,6 +2047,7 @@ var getStyleSheet = (({ className, acceptedMargin }
   font-family: Sans-Serif;
 }
 .${ className }.hidden {
+  pointer-events: none;
   display: block;
   opacity: 0;
   transform: translate(-999px, -999px);
@@ -2280,7 +2281,7 @@ class TooltipManager {
 
     this._hide = () => {
       this._container.classList.add('hidden');
-      this._container.style.transform = '';
+      this._visible = false;
     };
 
     this._display = ({ x, y }) => {
@@ -2297,7 +2298,7 @@ class TooltipManager {
     };
 
     this._handleMouseOut = (e /*: MouseEvent */) => {
-      let data = e.target[ns];
+      const data = e.target[ns];
       if (!data) return;
       if (e.relatedTarget === this._container) return;
       const relatedData = e.relatedTarget[ns];
@@ -2305,8 +2306,7 @@ class TooltipManager {
       this._currentData = relatedData || null;
       if (relatedData) {
         // switch tooltip content
-        let data = relatedData;
-        this._replaceTooltipContent(data);
+        this._replaceTooltipContent(relatedData);
         this._display(findBestTooltipPosition(getEntityBBox(e.relatedTarget), this._container.getBoundingClientRect()));
       } else {
         // hide tooltip
@@ -2338,9 +2338,18 @@ class TooltipManager {
     if (!document.head) throw new Error('No head in document');
     document.head.appendChild(getStyleSheet({ className, acceptedMargin }));
     // add event listener to the tooltip itself
-    cont.addEventListener('mouseleave', () => {
-      this._currentData = null;
-      this._hide();
+    cont.addEventListener('mouseleave', e => {
+      const relatedData = e.relatedTarget[ns];
+      if (relatedData === this._currentData) return; // enter part of same entity
+      this._currentData = relatedData || null;
+      if (relatedData) {
+        // switch tooltip content
+        this._replaceTooltipContent(relatedData);
+        this._display(findBestTooltipPosition(getEntityBBox(e.relatedTarget), this._container.getBoundingClientRect()));
+      } else {
+        // hide tooltip
+        this._hide();
+      }
     });
   }
 
@@ -2351,11 +2360,20 @@ class TooltipManager {
 
 
   attachToCanvas(canvas /*: Element */) {
-    canvas.addEventListener('mouseenter', this._promoteTarget(canvas));
-    canvas.addEventListener('mouseleave', this._demoteTarget(canvas));
+    const promote = this._promoteTarget(canvas);
+    const demote = this._demoteTarget(canvas);
+    canvas.addEventListener('mouseenter', promote);
+    canvas.addEventListener('mouseleave', demote);
     canvas.addEventListener('mouseover', this._handleMouseOver);
     canvas.addEventListener('mousemove', this._handleMouseOver); // not a typo
     canvas.addEventListener('mouseout', this._handleMouseOut);
+    return () => {
+      canvas.removeEventListener('mouseenter', promote);
+      canvas.removeEventListener('mouseleave', demote);
+      canvas.removeEventListener('mouseover', this._handleMouseOver);
+      canvas.removeEventListener('mousemove', this._handleMouseOver);
+      canvas.removeEventListener('mouseout', this._handleMouseOut);
+    };
   }
 }
 
@@ -2396,7 +2414,7 @@ const _svg = (name /*: string */) => (attributes /*: ?Attributes */
   return element;
 };
 
-const svg = _svg('svg');
+const svg$1 = _svg('svg');
 
 const circle = _svg('circle');
 
@@ -2632,12 +2650,12 @@ const domainBottomLine = length => horizontalLine$1(-length);
 
 const domain = ({
   start, end, startStyle, endStyle, fill,
-  residueWidth, mask: mask$$1
+  residueWidth, mask: mask$$1, filter
 }) => {
   const length = (end - start) * residueWidth;
   const topBottomLength = length - 2 * radius;
   const d = new PathData(`m${ radius },0`).add(domainTopLine(topBottomLength)).add(domainEnd(endStyle, topBottomLength)).add(domainBottomLine(topBottomLength)).add(domainStart(startStyle)).close();
-  return path({ d, fill, mask: mask$$1 });
+  return path({ d, fill, mask: mask$$1, filter });
 };
 
 const envelope = ({ start, aliStart, aliEnd, end, residueWidth }) => {
@@ -2689,7 +2707,7 @@ var domain$1 = (({ start, aliStart, aliEnd, end, startStyle, endStyle, color, te
     fill = `url(#${ gradientObj.gradientId })`;
   }
   const textElement = text({
-    x: (end - start) * residueWidth / 2, y: height * 0.75,
+    x: (end - start) * residueWidth / 2, y: height * 0.75 + 0.5,
     'text-anchor': 'middle',
     'font-size': 7.5,
     'font-family': 'Sans-Serif',
@@ -2697,9 +2715,15 @@ var domain$1 = (({ start, aliStart, aliEnd, end, startStyle, endStyle, color, te
     opacity: 0
   }, text$$1);
   textElement.dataset.maxwidth = (end - start) * residueWidth;
-  return group(null, defs(null, maskElement, gradientObj.gradientElement), domain({
+  return group(null, defs(null, maskElement, gradientObj.gradientElement, _svg('filter')({
+    id: 'filter', filterUnits: 'objectBoundingBox',
+    x: -0.1, y: -0.1, width: 5, height: 5
+  }, _svg('feGaussianBlur')({ in: 'SourceAlpha', stdDeviation: 1, result: 'alpha_blur' }), _svg('feSpecularLighting')({
+    in: 'alpha_blur', surfaceScale: 5, specularConstant: 1.5,
+    specularExponent: 12, 'lighting-color': '#ddd', result: 'light'
+  }, _svg('fePointLight')({ x: -100, y: -200, z: 100 })), _svg('feComposite')({ in: 'SourceGraphic', in2: 'light', operator: 'out' }))), domain({
     start, end, startStyle, endStyle, residueWidth,
-    fill, mask: `url(#${ maskId })`
+    fill, mask: `url(#${ maskId })`, filter: 'url(#filter)'
   }), text$$1 && textElement);
 });
 
@@ -2787,7 +2811,7 @@ class SvgRenderer {
       this._canvas.appendChild(g);
     };
 
-    this._canvas = svg({ width, height, viewBox: `0 0 ${ width } ${ height }` });
+    this._canvas = svg$1({ width, height, viewBox: `0 0 ${ width } ${ height }` });
     this._canvas.style.width = `${ width * 2 }px`;
     this._canvas.style.height = `${ height * 2 }px`;
   }
@@ -2904,9 +2928,11 @@ class DomainGFX {
       // draw markups
       const markups = (this._data.markups || []).sort((a, b) => a.start - b.start);
       const nestedMarkups = [];
+      let needsTooltips = false;
       for (const markup of markups) {
         if (isHidden(markup)) continue;
         this._renderer.drawMarkup(markup, this._params.image.width.residue, nestedMarkups);
+        needsTooltips |= !!(markup.tooltip || markup.metadata);
         if (markup.end) nestedMarkups.push(markup);
       }
       // draw sequence
@@ -2915,14 +2941,18 @@ class DomainGFX {
       for (const region of this._data.regions || []) {
         if (isHidden(region)) continue;
         this._renderer.drawRegion(region, this._params.image.width.residue);
+        needsTooltips |= !!(region.tooltip || region.metadata);
       }
       // draw motifs
       for (const motif of this._data.motifs || []) {
         if (isHidden(motif)) continue;
         this._renderer.drawMotif(motif, this._params.image.width.residue);
+        needsTooltips |= !!(motif.tooltip || motif.metadata);
       }
       // connect tooltip logic
-      getTooltipManager().attachToCanvas(this._renderer.canvas);
+      if (needsTooltips) {
+        this._detach = getTooltipManager().attachToCanvas(this._renderer.canvas);
+      }
     };
 
     this._createCanvas = () => {
@@ -2933,13 +2963,15 @@ class DomainGFX {
       return this._renderer.canvas;
     };
 
-    this.render = () => {
-      this._draw();
-    };
-
     this.delete = () => {
+      // unsubscribe to mouse events
+      if (this._detach) {
+        this._detach();
+        this._detach = null;
+      }
       // clean-up logic
       this._parent.removeChild(this._canvas);
+      // remove references to DOM
       this._canvas = this._parent = null;
     };
 
@@ -2948,6 +2980,7 @@ class DomainGFX {
     this._params = merge({}, getDefaults(), params);
     this._canvas = this._createCanvas();
     this._parent.appendChild(this._canvas);
+    this._draw();
   }
 
   _computeWidth({ length = 0 }, { image: { width, sequenceEndPadding } }) {
@@ -2967,6 +3000,7 @@ class DomainGFX {
     const prevCanvas = this._canvas;
     this._canvas = this._createCanvas();
     this._parent.replaceChild(this._canvas, prevCanvas);
+    this._draw();
   }
 
 }
@@ -3284,11 +3318,11 @@ function debounce(func, wait, options) {
         return;
       }
       if (dg) {
-        dg.delete();
+        dg.data = data;
+      } else {
+        dg = new DomainGFX({ parent: visu, data });
       }
       invalid.classList.add('hidden');
-      dg = new DomainGFX({ parent: visu, data });
-      dg.render();
     };
 
     // CodeMirror logic
