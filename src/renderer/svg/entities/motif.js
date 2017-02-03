@@ -1,5 +1,5 @@
 // @flow
-import {rectangle, group, defs} from '../svg';
+import {rectangle} from '../svg';
 import gradientMaker from '../utils/gradient';
 
 const motifOpacity = 0.5;
@@ -12,16 +12,14 @@ export default (
    height: number,
    color: ?Array<string> | string,
    gradient: ?boolean,
-   } */
+   } */,
+  addToDefs/*: function */
 ) => {
   const basicAttributes = {x, y, width, height, opacity: motifOpacity};
   if (!Array.isArray(color)) {
     return rectangle({...basicAttributes, fill: color || 'gray'});
   }
   const {gradientId, gradientElement} = gradientMaker(color, gradient);
-  return group(
-    null,
-    defs(null, gradientElement),
-    rectangle({...basicAttributes, fill: `url(#${gradientId})`})
-  );
+  addToDefs(gradientElement);
+  return rectangle({...basicAttributes, fill: `url(#${gradientId})`});
 };

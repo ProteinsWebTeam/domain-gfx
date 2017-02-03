@@ -1,5 +1,6 @@
+// @flow
 import PathData from '../utils/pathData';
-import svg, {path, rectangle, defs, group, mask, text as textEl} from '../svg';
+import {path, rectangle, group, mask, text as textEl} from '../svg';
 import gradientMaker from '../utils/gradient';
 import uniqueId from '../../../utils/uniqueId';
 
@@ -19,7 +20,7 @@ const arc = (rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y) => (
   `A${rx},${ry},${xAxisRotate},${largeArcFlag},${sweepFlag},${x},${y}`
 );
 
-const domainEnd = (endStyle, topBottomLength) => {
+const domainEnd = (endStyle/*: string */, topBottomLength/*: number */) => {
   switch (endStyle.toLowerCase()) {
     case 'jagged':
       return (
@@ -38,7 +39,7 @@ const domainEnd = (endStyle, topBottomLength) => {
       );
   }
 };
-const domainStart = startStyle => {
+const domainStart = (startStyle/*: string */) => {
   switch (startStyle.toLowerCase()) {
     case 'jagged':
       return (
@@ -58,20 +59,29 @@ const domainStart = startStyle => {
   }
 };
 
-const domainTopLine = length => horizontalLine(length);
-const domainBottomLine = length => horizontalLine(-length);
+const domainTopLine = (length/*: number */) => horizontalLine(length);
+const domainBottomLine = (length/*: number */) => horizontalLine(-length);
 
 const domain = ({
   start, end, startStyle, endStyle, fill,
   residueWidth, mask, filter,
-}) => {
+}/*: {
+  start: number,
+  end: number,
+  startStyle: ?string,
+  endStyle: ?string,
+  fill: string,
+  residueWidth: number,
+  mask: string,
+  filter: ?string,
+} */) => {
   const length = (end - start) * residueWidth;
   const topBottomLength = length - (2 * radius);
   const d = new PathData(`m${radius},0`)
     .add(domainTopLine(topBottomLength))
-    .add(domainEnd(endStyle, topBottomLength))
+    .add(domainEnd(endStyle || '', topBottomLength))
     .add(domainBottomLine(topBottomLength))
-    .add(domainStart(startStyle))
+    .add(domainStart(startStyle || ''))
     .close();
   return path({d, fill, mask, filter});
 };
@@ -115,8 +125,21 @@ const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
 };
 
 export default (
-  {start, aliStart, aliEnd, end, startStyle, endStyle, color, text, gradient},
-  residueWidth
+  {start, aliStart, aliEnd, end, startStyle, endStyle, color, text, gradient}
+  /*: {
+    start: number,
+    aliStart: ?number,
+    aliEnd: ?number,
+    end: number,
+    startStyle: ?string,
+    endStyle: ?string,
+    color: string | Array<string>,
+    text: ?string,
+    gradient: ?boolean,
+  } */,
+  residueWidth/*: number */,
+  spotlight/*: ?string */,
+  addToRefs/*: function */
 ) => {
   const {maskId, maskElement} = envelope(
     {
@@ -125,10 +148,12 @@ export default (
       residueWidth,
     }
   );
+  addToRefs(maskElement);
   let fill = color;
   let gradientObj = {};
-  if (Array.isArray(color)) {
-    gradientObj = gradientMaker(color, gradient);
+  if (Array.isArray(fill)) {
+    gradientObj = gradientMaker(fill, gradient);
+    addToRefs(gradientObj.gradientElement);
     fill = `url(#${gradientObj.gradientId})`;
   }
   const textElement = textEl(
@@ -140,40 +165,18 @@ export default (
       fill: '#000',
       opacity: 0,
     },
-    text
+    text || ''
   );
-  textElement.dataset.maxwidth = (end - start) * residueWidth;
+  if (textElement.dataset instanceof Object) {
+    textElement.dataset.maxwidth = (end - start) * residueWidth;
+  }
   return group(
     null,
-    defs(
-      null,
-      maskElement,
-      gradientObj.gradientElement,
-      svg('filter')(
-        {
-          id: 'filter', filterUnits: 'objectBoundingBox',
-          x: -0.1, y: -0.1, width: 5, height: 5
-        },
-        svg('feGaussianBlur')(
-          {in: 'SourceAlpha', stdDeviation: 1, result: 'alpha_blur'}
-        ),
-        svg('feSpecularLighting')(
-          {
-            in: 'alpha_blur', surfaceScale: 5, specularConstant: 1.5,
-            specularExponent: 12, 'lighting-color': '#ddd', result: 'light'
-          },
-          svg('fePointLight')(
-            {x: -100, y: -200, z: 100}
-          )
-        ),
-        svg('feComposite')(
-          {in: 'SourceGraphic', in2: 'light', operator: 'out'}
-        )
-    )),
     domain({
       start, end, startStyle, endStyle, residueWidth,
-      fill, mask: `url(#${maskId})`, filter: 'url(#filter)',
+      fill: fill, mask: `url(#${maskId})`,
+      filter: spotlight && `url(#${spotlight})`,
     }),
-    text && textElement
+    text ? textElement : null
   );
 };

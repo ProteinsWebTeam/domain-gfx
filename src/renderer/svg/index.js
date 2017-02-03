@@ -1,20 +1,48 @@
-import {svg, group} from './svg';
+import {
+  svg, group, defs,
+  filter, feGaussianBlur, feSpecularLighting, fePointLight, feComposite
+} from './svg';
 import markup from './entities/markup';
 import sequence from './entities/sequence';
 import domain from './entities/domain';
 import motif from './entities/motif';
 import ns from '../../utils/namespace';
+import uniqueId from '../../utils/uniqueId';
 
 const connectData = (entity, data) => {
   if (!(window && (data.tooltip || data.metadata))) return;
-  for (const chunk of entity.querySelectorAll(':not(g)')) {
-    chunk[ns] = data;
+  for (const element of entity.querySelectorAll(':not(g)')) {
+    element[ns] = data;
   }
 };
 
 export default class SvgRenderer {
-  constructor ({width, height}) {
-    this._canvas = svg({width, height, viewBox: `0 0 ${width} ${height}`});
+  constructor ({width, height, spotlight = true}) {
+    this._spotlight = spotlight && uniqueId();
+    this._defs = defs(
+      null,
+      this._spotlight && filter(
+        {
+          id: this._spotlight, filterUnits: 'objectBoundingBox',
+          x: -0.1, y: -0.1, width: 5, height: 5
+        },
+        feGaussianBlur(
+          {in: 'SourceAlpha', stdDeviation: 1, result: 'alpha_blur'}
+        ),
+        feSpecularLighting(
+          {
+            in: 'alpha_blur', surfaceScale: 5, specularConstant: 1.5,
+            specularExponent: 12, 'lighting-color': '#ddd', result: 'light'
+          },
+          fePointLight({x: -100, y: -200, z: 100})
+        ),
+        feComposite({in: 'SourceGraphic', in2: 'light', operator: 'out'})
+      )
+    );
+    this._canvas = svg(
+      {width, height, viewBox: `0 0 ${width} ${height}`},
+      this._defs
+    );
     this._canvas.style.width = `${width * 2}px`;
     this._canvas.style.height = `${height * 2}px`;
   }
@@ -22,6 +50,8 @@ export default class SvgRenderer {
   get canvas () {
     return this._canvas;
   }
+
+  _addToDefs = element => this._defs.appendChild(element);
 
   drawMarkup = (m, residueWidth, previousNestedMarkups) => {
     if (m.end && !Number.isFinite(m.level)) {
@@ -60,7 +90,7 @@ export default class SvgRenderer {
   drawRegion = (region, residueWidth) => {
     const g = group(
       {transform: `translate(${region.start * residueWidth}, 5)`},
-      domain(region, residueWidth)
+      domain(region, residueWidth, this._spotlight, this._addToDefs)
     );
     g.dataset.entity = 'region';
     connectData(g, region);
@@ -83,7 +113,7 @@ export default class SvgRenderer {
         height: 8,
         color: m.color,
         gradient: m.gradient,
-      })
+      }, this._addToDefs)
     );
     g.dataset.entity = 'motif';
     connectData(g, m);

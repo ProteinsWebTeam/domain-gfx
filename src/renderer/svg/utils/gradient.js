@@ -1,6 +1,6 @@
 // @flow
 import uniqueId from '../../../utils/uniqueId';
-import {gradient, stop} from '../svg';
+import {linearGradient, stop} from '../svg';
 
 const smoothStops = (colors/*: Array<string>*/) => {
   let _colors = colors;
@@ -34,7 +34,7 @@ export default (colors/*: Array<string>*/, smoothGradient/*: ?boolean */) => {
   const gradientId = uniqueId();
   return {
     gradientId,
-    gradientElement: gradient('linear')(
+    gradientElement: linearGradient(
       {id: gradientId, x1: 0, x2: 0, y1: 0, y2: 1},
       ...(smoothGradient ? smoothStops : bandStops)(colors)
     ),

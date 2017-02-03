@@ -2390,13 +2390,13 @@ var getTooltipManager = (() => {
 const svgNamespace = 'http://www.w3.org/2000/svg';
 
 /*::
-  type Attributes = {[key: string]: number | string};
+  type Attributes = {[key: string]: ?(number | string)};
   type Child = Node | string | null;
 */
 
 const _svg = (name /*: string */) => (attributes /*: ?Attributes */
 , ...children /*: Array<Child> */
-) => {
+) => /*: Element */{
   // Create element
   const element = document.createElementNS(svgNamespace, name);
   // Set attributes
@@ -2410,17 +2410,16 @@ const _svg = (name /*: string */) => (attributes /*: ?Attributes */
     if (!child) continue;
     element.appendChild(child instanceof Node ? child : document.createTextNode(child));
   }
-  //
   return element;
 };
 
-const svg$1 = _svg('svg');
+const svg = _svg('svg');
 
 const circle = _svg('circle');
 
 const defs = _svg('defs');
 
-const gradient = (type /*: string */) => _svg(`${ type }Gradient`);
+const linearGradient = _svg(`linearGradient`);
 
 const group = _svg('g');
 
@@ -2433,6 +2432,16 @@ const rectangle = _svg('rect');
 const stop = _svg('stop');
 
 const text = _svg('text');
+
+const filter = _svg('filter');
+
+const feGaussianBlur = _svg('feGaussianBlur');
+
+const feSpecularLighting = _svg('feSpecularLighting');
+
+const fePointLight = _svg('fePointLight');
+
+const feComposite = _svg('feComposite');
 
 // @flow export
 var PathData = class {
@@ -2600,10 +2609,11 @@ var gradientMaker = ((colors /*: Array<string>*/, smoothGradient /*: ?boolean */
   const gradientId = uniqueId();
   return {
     gradientId,
-    gradientElement: gradient('linear')({ id: gradientId, x1: 0, x2: 0, y1: 0, y2: 1 }, ...(smoothGradient ? smoothStops : bandStops)(colors))
+    gradientElement: linearGradient({ id: gradientId, x1: 0, x2: 0, y1: 0, y2: 1 }, ...(smoothGradient ? smoothStops : bandStops)(colors))
   };
 });
 
+// @flow
 const height = 10;
 const radius = height / 2;
 
@@ -2618,7 +2628,7 @@ const verticalLine$1 = length => line$1(0, length);
 
 const arc = (rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y) => `A${ rx },${ ry },${ xAxisRotate },${ largeArcFlag },${ sweepFlag },${ x },${ y }`;
 
-const domainEnd = (endStyle, topBottomLength) => {
+const domainEnd = (endStyle /*: string */, topBottomLength /*: number */) => {
   switch (endStyle.toLowerCase()) {
     case 'jagged':
       return horizontalLine$1(radius) + line$1(-radius / 2, radius / 2) + line$1(radius / 2, radius / 2) + line$1(-radius / 2, radius / 2) + line$1(radius / 2, radius / 2) + horizontalLine$1(-radius);
@@ -2631,7 +2641,7 @@ const domainEnd = (endStyle, topBottomLength) => {
       return horizontalLine$1(radius) + verticalLine$1(height) + horizontalLine$1(-radius);
   }
 };
-const domainStart = startStyle => {
+const domainStart = (startStyle /*: string */) => {
   switch (startStyle.toLowerCase()) {
     case 'jagged':
       return horizontalLine$1(-radius) + line$1(radius / 2, -radius / 2) + line$1(-radius / 2, -radius / 2) + line$1(radius / 2, -radius / 2) + line$1(-radius / 2, -radius / 2) + horizontalLine$1(radius);
@@ -2645,17 +2655,26 @@ const domainStart = startStyle => {
   }
 };
 
-const domainTopLine = length => horizontalLine$1(length);
-const domainBottomLine = length => horizontalLine$1(-length);
+const domainTopLine = (length /*: number */) => horizontalLine$1(length);
+const domainBottomLine = (length /*: number */) => horizontalLine$1(-length);
 
 const domain = ({
   start, end, startStyle, endStyle, fill,
-  residueWidth, mask: mask$$1, filter
-}) => {
+  residueWidth, mask: mask$$1, filter: filter$$1
+} /*: {
+   start: number,
+   end: number,
+   startStyle: ?string,
+   endStyle: ?string,
+   fill: string,
+   residueWidth: number,
+   mask: string,
+   filter: ?string,
+  } */) => {
   const length = (end - start) * residueWidth;
   const topBottomLength = length - 2 * radius;
-  const d = new PathData(`m${ radius },0`).add(domainTopLine(topBottomLength)).add(domainEnd(endStyle, topBottomLength)).add(domainBottomLine(topBottomLength)).add(domainStart(startStyle)).close();
-  return path({ d, fill, mask: mask$$1, filter });
+  const d = new PathData(`m${ radius },0`).add(domainTopLine(topBottomLength)).add(domainEnd(endStyle || '', topBottomLength)).add(domainBottomLine(topBottomLength)).add(domainStart(startStyle || '')).close();
+  return path({ d, fill, mask: mask$$1, filter: filter$$1 });
 };
 
 const envelope = ({ start, aliStart, aliEnd, end, residueWidth }) => {
@@ -2694,16 +2713,33 @@ const envelope = ({ start, aliStart, aliEnd, end, residueWidth }) => {
   };
 };
 
-var domain$1 = (({ start, aliStart, aliEnd, end, startStyle, endStyle, color, text: text$$1, gradient: gradient$$1 }, residueWidth) => {
+var domain$1 = (({ start, aliStart, aliEnd, end, startStyle, endStyle, color, text: text$$1, gradient }
+/*: {
+  start: number,
+  aliStart: ?number,
+  aliEnd: ?number,
+  end: number,
+  startStyle: ?string,
+  endStyle: ?string,
+  color: string | Array<string>,
+  text: ?string,
+  gradient: ?boolean,
+} */
+, residueWidth /*: number */
+, spotlight /*: ?string */
+, addToRefs /*: function */
+) => {
   const { maskId, maskElement } = envelope({
     start, aliStart: aliStart || start,
     aliEnd: aliEnd || end, end,
     residueWidth
   });
+  addToRefs(maskElement);
   let fill = color;
   let gradientObj = {};
-  if (Array.isArray(color)) {
-    gradientObj = gradientMaker(color, gradient$$1);
+  if (Array.isArray(fill)) {
+    gradientObj = gradientMaker(fill, gradient);
+    addToRefs(gradientObj.gradientElement);
     fill = `url(#${ gradientObj.gradientId })`;
   }
   const textElement = text({
@@ -2713,24 +2749,21 @@ var domain$1 = (({ start, aliStart, aliEnd, end, startStyle, endStyle, color, te
     'font-family': 'Sans-Serif',
     fill: '#000',
     opacity: 0
-  }, text$$1);
-  textElement.dataset.maxwidth = (end - start) * residueWidth;
-  return group(null, defs(null, maskElement, gradientObj.gradientElement, _svg('filter')({
-    id: 'filter', filterUnits: 'objectBoundingBox',
-    x: -0.1, y: -0.1, width: 5, height: 5
-  }, _svg('feGaussianBlur')({ in: 'SourceAlpha', stdDeviation: 1, result: 'alpha_blur' }), _svg('feSpecularLighting')({
-    in: 'alpha_blur', surfaceScale: 5, specularConstant: 1.5,
-    specularExponent: 12, 'lighting-color': '#ddd', result: 'light'
-  }, _svg('fePointLight')({ x: -100, y: -200, z: 100 })), _svg('feComposite')({ in: 'SourceGraphic', in2: 'light', operator: 'out' }))), domain({
+  }, text$$1 || '');
+  if (textElement.dataset instanceof Object) {
+    textElement.dataset.maxwidth = (end - start) * residueWidth;
+  }
+  return group(null, domain({
     start, end, startStyle, endStyle, residueWidth,
-    fill, mask: `url(#${ maskId })`, filter: 'url(#filter)'
-  }), text$$1 && textElement);
+    fill: fill, mask: `url(#${ maskId })`,
+    filter: spotlight && `url(#${ spotlight })`
+  }), text$$1 ? textElement : null);
 });
 
 // @flow
 const motifOpacity = 0.5;
 
-var motif = (({ position: { x, y }, length: width, height, color, gradient: gradient$$1 }
+var motif = (({ position: { x, y }, length: width, height, color, gradient }
 /*: {
  position: {x: number, y: number},
  length: number,
@@ -2738,24 +2771,28 @@ var motif = (({ position: { x, y }, length: width, height, color, gradient: grad
  color: ?Array<string> | string,
  gradient: ?boolean,
  } */
+, addToDefs /*: function */
 ) => {
   const basicAttributes = { x, y, width, height, opacity: motifOpacity };
   if (!Array.isArray(color)) {
     return rectangle(_extends({}, basicAttributes, { fill: color || 'gray' }));
   }
-  const { gradientId, gradientElement } = gradientMaker(color, gradient$$1);
-  return group(null, defs(null, gradientElement), rectangle(_extends({}, basicAttributes, { fill: `url(#${ gradientId })` })));
+  const { gradientId, gradientElement } = gradientMaker(color, gradient);
+  addToDefs(gradientElement);
+  return rectangle(_extends({}, basicAttributes, { fill: `url(#${ gradientId })` }));
 });
 
 const connectData = (entity, data) => {
   if (!(window && (data.tooltip || data.metadata))) return;
-  for (const chunk of entity.querySelectorAll(':not(g)')) {
-    chunk[ns] = data;
+  for (const element of entity.querySelectorAll(':not(g)')) {
+    element[ns] = data;
   }
 };
 
 class SvgRenderer {
-  constructor({ width, height }) {
+  constructor({ width, height, spotlight = true }) {
+    this._addToDefs = element => this._defs.appendChild(element);
+
     this.drawMarkup = (m, residueWidth, previousNestedMarkups) => {
       if (m.end && !Number.isFinite(m.level)) {
         const availableLevels = new Set([0, 1, -1]);
@@ -2785,7 +2822,7 @@ class SvgRenderer {
     };
 
     this.drawRegion = (region, residueWidth) => {
-      const g = group({ transform: `translate(${ region.start * residueWidth }, 5)` }, domain$1(region, residueWidth));
+      const g = group({ transform: `translate(${ region.start * residueWidth }, 5)` }, domain$1(region, residueWidth, this._spotlight, this._addToDefs));
       g.dataset.entity = 'region';
       connectData(g, region);
       this._canvas.appendChild(g);
@@ -2805,13 +2842,21 @@ class SvgRenderer {
         height: 8,
         color: m.color,
         gradient: m.gradient
-      }));
+      }, this._addToDefs));
       g.dataset.entity = 'motif';
       connectData(g, m);
       this._canvas.appendChild(g);
     };
 
-    this._canvas = svg$1({ width, height, viewBox: `0 0 ${ width } ${ height }` });
+    this._spotlight = spotlight && uniqueId();
+    this._defs = defs(null, this._spotlight && filter({
+      id: this._spotlight, filterUnits: 'objectBoundingBox',
+      x: -0.1, y: -0.1, width: 5, height: 5
+    }, feGaussianBlur({ in: 'SourceAlpha', stdDeviation: 1, result: 'alpha_blur' }), feSpecularLighting({
+      in: 'alpha_blur', surfaceScale: 5, specularConstant: 1.5,
+      specularExponent: 12, 'lighting-color': '#ddd', result: 'light'
+    }, fePointLight({ x: -100, y: -200, z: 100 })), feComposite({ in: 'SourceGraphic', in2: 'light', operator: 'out' })));
+    this._canvas = svg({ width, height, viewBox: `0 0 ${ width } ${ height }` }, this._defs);
     this._canvas.style.width = `${ width * 2 }px`;
     this._canvas.style.height = `${ height * 2 }px`;
   }
