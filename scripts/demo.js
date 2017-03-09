@@ -32,12 +32,7 @@ const copy = (src, dest) => fs.createReadStream(src)
           presets: ['stage-2'],
           plugins: ['external-helpers'],
         }),
-        nodeResolve({
-          module: true,
-          jsnext: true,
-          main: true,
-          browser: true,
-        })
+        nodeResolve()
       ],
     });
     await bundle.write({

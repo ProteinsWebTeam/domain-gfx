@@ -1,7 +1,7 @@
 // import DomainGFX from 'index.js';
 const DomainGFX = require('index').default;
 
-describe('basic instantiation', () => {
+describe.skip('basic instantiation', () => {
   let dg;
   beforeAll(() => {
     dg = new DomainGFX({}, document.body);
