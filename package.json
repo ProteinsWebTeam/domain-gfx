@@ -1,5 +1,5 @@
 {
-  "name": "domain_gfx",
+  "name": "domain-gfx",
   "version": "0.1.0",
   "description": "Domain graphics drawing library",
   "main": "dist/domain_gfx.es5.js",

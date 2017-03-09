@@ -2029,12 +2029,12 @@ var merge = createAssigner(function (object, source, srcIndex) {
 // @flow
 let id = 0;
 
-var uniqueId = (() => `domain-gfx-id-${ ++id }`);
+var uniqueId = (() => `domain-gfx-id-${++id}`);
 
 // @flow
 const supportsSymbol = window && window.Symbol;
 
-var ns = supportsSymbol ? Symbol('lib namespace') : `_${ uniqueId() }`;
+var ns = supportsSymbol ? Symbol('lib namespace') : `_${uniqueId()}`;
 
 // @flow
 var getStyleSheet = (({ className, acceptedMargin }
@@ -2042,35 +2042,35 @@ var getStyleSheet = (({ className, acceptedMargin }
 ) => {
   const stylesheet = document.createElement('style');
   stylesheet.textContent = `
-.${ className } {
-  padding-bottom: ${ acceptedMargin }px;
+.${className} {
+  padding-bottom: ${acceptedMargin}px;
   font-family: Sans-Serif;
 }
-.${ className }.hidden {
+.${className}.hidden {
   pointer-events: none;
   display: block;
   opacity: 0;
   transform: translate(-999px, -999px);
   transform: translate(200vw, 200vh);
 }
-.${ className }___container {
+.${className}___container {
   border-style: solid;
   border-color: #dedede;
   border-width: 1px 2px 2px 1px;
   border-radius: 0.2em;
   background-color: #fff;
-  margin-bottom: ${ acceptedMargin }px;
+  margin-bottom: ${acceptedMargin}px;
 }
-.${ className } thead {
+.${className} thead {
   background-color: #dedede;
 }
-.${ className } td:first-of-type {
+.${className} td:first-of-type {
   font-weight: bold;
 }
-.${ className } th {
+.${className} th {
   text-align: left;
 }
-.${ className } .coordinates {
+.${className} .coordinates {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -2078,7 +2078,7 @@ var getStyleSheet = (({ className, acceptedMargin }
   -ms-flex-align: center;
   align-items: center;
 }
-.${ className } .domain {
+.${className} .domain {
   margin: 0 0.5em;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -2089,7 +2089,7 @@ var getStyleSheet = (({ className, acceptedMargin }
   height: 0.5em;
   background-color: black;
 }
-.${ className } .alignment {
+.${className} .alignment {
   display: inline-block;
   margin-left: 0;
   height: 1em;
@@ -2172,13 +2172,13 @@ var dataToMarkup = ((data /*: Object */) => {
       offset = (aliStart - _data.start) / length * 100;
     }
     coordinates = `
-      ${ _data.start }<span style="width: 100px;" class="domain">
+      ${_data.start}<span style="width: 100px;" class="domain">
         <span class="alignment" style="
-          width: ${ (aliEnd - aliStart) * 100 / length }px;
-          margin-left: ${ offset }px;
-          background-color: ${ _data.color };
+          width: ${(aliEnd - aliStart) * 100 / length}px;
+          margin-left: ${offset}px;
+          background-color: ${_data.color};
         "></span>
-      </span>${ _data.end }
+      </span>${_data.end}
     `;
   }
   // render to string
@@ -2187,36 +2187,36 @@ var dataToMarkup = ((data /*: Object */) => {
       <thead>
         <tr>
           <th colspan="2">
-            ${ mainTitle }
-            ${ subTitle && subTitle !== mainTitle ? ` (${ subTitle })` : '' }
+            ${mainTitle}
+            ${subTitle && subTitle !== mainTitle ? ` (${subTitle})` : ''}
           </th>
         </tr>
       </thead>
       <tbody>
-        ${ description ? `
+        ${description ? `
         <tr>
           <td>Description:</td>
-          <td>${ description }</td>
+          <td>${description}</td>
         </tr>
-        ` : '' }
-        ${ coordinates ? `
+        ` : ''}
+        ${coordinates ? `
         <tr>
           <td>Coordinates:</td>
-          <td class="coordinates">${ coordinates }</td>
+          <td class="coordinates">${coordinates}</td>
         </tr>
-        ` : '' }
-        ${ !coordinates ? `
+        ` : ''}
+        ${!coordinates ? `
         <tr>
           <td>Position:</td>
-          <td>${ position }</td>
+          <td>${position}</td>
         </tr>
-        ` : '' }
-        ${ source ? `
+        ` : ''}
+        ${source ? `
         <tr>
           <td>Source:</td>
-          <td>${ source }</td>
+          <td>${source}</td>
         </tr>
-        ` : '' }
+        ` : ''}
       </tbody>
     </table>
   `;
@@ -2249,7 +2249,7 @@ const findBestTooltipPosition = (entityBBox /*: Object */
 
 const buildTooltipContent = (html /*: string */) => {
   const el = document.createElement('div');
-  el.classList.add(`${ className }___container`);
+  el.classList.add(`${className}___container`);
   el.innerHTML = html;
   return el;
 };
@@ -2285,7 +2285,7 @@ class TooltipManager {
     };
 
     this._display = ({ x, y }) => {
-      this._container.style.transform = `translate(${ x }px, ${ y + acceptedMargin }px)`;
+      this._container.style.transform = `translate(${x}px, ${y + acceptedMargin}px)`;
       this._container.classList.remove('hidden');
     };
 
@@ -2470,9 +2470,9 @@ var PathData = class {
 };
 
 const line = (x = 0, y = 0) => {
-  if (x === 0) return `v${ y }`;
-  if (y === 0) return `h${ x }`;
-  return `l${ x },${ y }`;
+  if (x === 0) return `v${y}`;
+  if (y === 0) return `h${x}`;
+  return `l${x},${y}`;
 };
 
 const offset = 8;
@@ -2488,7 +2488,7 @@ const buildSquareHead = (color, isOnTop) => {
   });
 };
 const buildDiamondHead = (color, isOnTop) => {
-  let d = new PathData(`m0,${ isOnTop ? -offset - 2 : offset - 2 }`).add(line(2, 2)).add(line(-2, 2)).add(line(-2, -2)).close();
+  let d = new PathData(`m0,${isOnTop ? -offset - 2 : offset - 2}`).add(line(2, 2)).add(line(-2, 2)).add(line(-2, -2)).close();
   return path({ d, fill: color });
 };
 const buildCircleHead = (color, isOnTop) => {
@@ -2497,9 +2497,9 @@ const buildCircleHead = (color, isOnTop) => {
 const buildArrowHead = (color, isOnTop) => {
   let d;
   if (isOnTop) {
-    d = new PathData(`m-2,${ -(offset - 2) }`).add(line(2, -2)).add(line(2, 2)).finish();
+    d = new PathData(`m-2,${-(offset - 2)}`).add(line(2, -2)).add(line(2, 2)).finish();
   } else {
-    d = new PathData(`m-2,${ offset - 2 }`).add(line(2, 2)).add(line(2, -2)).finish();
+    d = new PathData(`m-2,${offset - 2}`).add(line(2, 2)).add(line(2, -2)).finish();
   }
   return path({ stroke: color, fill: 'none', d });
 };
@@ -2507,16 +2507,16 @@ const buildPointerHead = (color, isOnTop) => {
   const sequenceSize = 5;
   let d;
   if (isOnTop) {
-    d = new PathData(`m-2,${ -(sequenceSize / 2 + 2) }`).add(line(2, 2)).add(line(2, -2)).finish();
+    d = new PathData(`m-2,${-(sequenceSize / 2 + 2)}`).add(line(2, 2)).add(line(2, -2)).finish();
   } else {
-    d = new PathData(`m-2,${ sequenceSize / 2 + 2 }`).add(line(2, -2)).add(line(2, 2)).finish();
+    d = new PathData(`m-2,${sequenceSize / 2 + 2}`).add(line(2, -2)).add(line(2, 2)).finish();
   }
   return path({ stroke: color, fill: 'none', d });
 };
 const buildLineHead = (color, isOnTop) => {
   return path({
     stroke: color,
-    d: new PathData(`m0,${ (isOnTop ? -1 : 1) * offset - 1.5 }`).add(verticalLine(3)).finish()
+    d: new PathData(`m0,${(isOnTop ? -1 : 1) * offset - 1.5}`).add(verticalLine(3)).finish()
   });
 };
 
@@ -2590,7 +2590,7 @@ const smoothStops = (colors /*: Array<string>*/) => {
   const { length } = _colors; // length
   const step = 100 / (length - 1); // step
   return _colors.map((color, i) => stop({
-    offset: `${ i * step }%`,
+    offset: `${i * step}%`,
     'stop-color': color
   }));
 };
@@ -2599,8 +2599,8 @@ const bandStops = (colors /*: Array<string>*/) => {
   const { length } = colors; // length
   const step = 100 / length; // step
   for (let i = 0; i < length; i++) {
-    output.push(stop({ offset: `${ i * step }%`, 'stop-color': colors[i] }));
-    output.push(stop({ offset: `${ i * step + step }%`, 'stop-color': colors[i] }));
+    output.push(stop({ offset: `${i * step}%`, 'stop-color': colors[i] }));
+    output.push(stop({ offset: `${i * step + step}%`, 'stop-color': colors[i] }));
   }
   return output;
 };
@@ -2618,15 +2618,15 @@ const height = 10;
 const radius = height / 2;
 
 const line$1 = (x = 0, y = 0) => {
-  if (x === 0) return `v${ y }`;
-  if (y === 0) return `h${ x }`;
-  return `l${ x },${ y }`;
+  if (x === 0) return `v${y}`;
+  if (y === 0) return `h${x}`;
+  return `l${x},${y}`;
 };
 
 const horizontalLine$1 = length => line$1(length, 0);
 const verticalLine$1 = length => line$1(0, length);
 
-const arc = (rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y) => `A${ rx },${ ry },${ xAxisRotate },${ largeArcFlag },${ sweepFlag },${ x },${ y }`;
+const arc = (rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y) => `A${rx},${ry},${xAxisRotate},${largeArcFlag},${sweepFlag},${x},${y}`;
 
 const domainEnd = (endStyle /*: string */, topBottomLength /*: number */) => {
   switch (endStyle.toLowerCase()) {
@@ -2673,7 +2673,7 @@ const domain = ({
   } */) => {
   const length = (end - start) * residueWidth;
   const topBottomLength = length - 2 * radius;
-  const d = new PathData(`m${ radius },0`).add(domainTopLine(topBottomLength)).add(domainEnd(endStyle || '', topBottomLength)).add(domainBottomLine(topBottomLength)).add(domainStart(startStyle || '')).close();
+  const d = new PathData(`m${radius},0`).add(domainTopLine(topBottomLength)).add(domainEnd(endStyle || '', topBottomLength)).add(domainBottomLine(topBottomLength)).add(domainStart(startStyle || '')).close();
   return path({ d, fill, mask: mask$$1, filter: filter$$1 });
 };
 
@@ -2740,7 +2740,7 @@ var domain$1 = (({ start, aliStart, aliEnd, end, startStyle, endStyle, color, te
   if (Array.isArray(fill)) {
     gradientObj = gradientMaker(fill, gradient);
     addToRefs(gradientObj.gradientElement);
-    fill = `url(#${ gradientObj.gradientId })`;
+    fill = `url(#${gradientObj.gradientId})`;
   }
   const textElement = text({
     x: (end - start) * residueWidth / 2, y: height * 0.75 + 0.5,
@@ -2755,8 +2755,8 @@ var domain$1 = (({ start, aliStart, aliEnd, end, startStyle, endStyle, color, te
   }
   return group(null, domain({
     start, end, startStyle, endStyle, residueWidth,
-    fill: fill, mask: `url(#${ maskId })`,
-    filter: spotlight && `url(#${ spotlight })`
+    fill: fill, mask: `url(#${maskId})`,
+    filter: spotlight && `url(#${spotlight})`
   }), text$$1 ? textElement : null);
 });
 
@@ -2779,7 +2779,7 @@ var motif = (({ position: { x, y }, length: width, height, color, gradient }
   }
   const { gradientId, gradientElement } = gradientMaker(color, gradient);
   addToDefs(gradientElement);
-  return rectangle(_extends({}, basicAttributes, { fill: `url(#${ gradientId })` }));
+  return rectangle(_extends({}, basicAttributes, { fill: `url(#${gradientId})` }));
 });
 
 const connectData = (entity, data) => {
@@ -2804,7 +2804,7 @@ class SvgRenderer {
         const [level] = availableLevels;
         m.level = level || 0;
       }
-      const g = group({ transform: `translate(${ m.start * residueWidth }, 10)` }, markup(m, residueWidth));
+      const g = group({ transform: `translate(${m.start * residueWidth}, 10)` }, markup(m, residueWidth));
       g.dataset.entity = 'markup';
       connectData(g, m);
       this._canvas.appendChild(g);
@@ -2822,7 +2822,7 @@ class SvgRenderer {
     };
 
     this.drawRegion = (region, residueWidth) => {
-      const g = group({ transform: `translate(${ region.start * residueWidth }, 5)` }, domain$1(region, residueWidth, this._spotlight, this._addToDefs));
+      const g = group({ transform: `translate(${region.start * residueWidth}, 5)` }, domain$1(region, residueWidth, this._spotlight, this._addToDefs));
       g.dataset.entity = 'region';
       connectData(g, region);
       this._canvas.appendChild(g);
@@ -2836,7 +2836,7 @@ class SvgRenderer {
     };
 
     this.drawMotif = (m, residueWidth) => {
-      const g = group({ transform: `translate(${ m.start * residueWidth }, 6)` }, motif({
+      const g = group({ transform: `translate(${m.start * residueWidth}, 6)` }, motif({
         position: { x: 0, y: 0 },
         length: (m.end - m.start) * residueWidth,
         height: 8,
@@ -2856,9 +2856,9 @@ class SvgRenderer {
       in: 'alpha_blur', surfaceScale: 5, specularConstant: 1.5,
       specularExponent: 12, 'lighting-color': '#ddd', result: 'light'
     }, fePointLight({ x: -100, y: -200, z: 100 })), feComposite({ in: 'SourceGraphic', in2: 'light', operator: 'out' })));
-    this._canvas = svg({ width, height, viewBox: `0 0 ${ width } ${ height }` }, this._defs);
-    this._canvas.style.width = `${ width * 2 }px`;
-    this._canvas.style.height = `${ height * 2 }px`;
+    this._canvas = svg({ width, height, viewBox: `0 0 ${width} ${height}` }, this._defs);
+    this._canvas.style.width = `${width * 2}px`;
+    this._canvas.style.height = `${height * 2}px`;
   }
 
   get canvas() {
@@ -2934,7 +2934,7 @@ const sanitizer = (data /*: Object */) => {
     if (keyNumbers.has(key)) {
       value = +value;
       if (isNaN(value)) {
-        throw new Error(`expected key ${ rawKey } to be a number, not ${ String(rawValue) })`);
+        throw new Error(`expected key ${rawKey} to be a number, not ${String(rawValue)})`);
       }
     }
     // process British spelling
