@@ -1,6 +1,6 @@
 {
   "name": "domain-gfx",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Domain graphics drawing library",
   "main": "dist/domain_gfx.es5.js",
   "jsnext": "src/index.js",
