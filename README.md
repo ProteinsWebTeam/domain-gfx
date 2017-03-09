@@ -37,7 +37,16 @@ add the global `DomainGfx`.
 
 If you are loading it asynchronously, you can listen for the
 `'domainGfxReady'` event on the `document`, containing the DomainGfx
-class.
+class. e.g.:
+
+```js
+document.addEventListener('domainGfxReady', event => {
+  const DomainGfx = event.detail;
+  // Use the DomainGfx class...
+  // ...
+});
+
+```
 
 From the `dist` folder, use the `domain_gfx.es5.js` file, for ES5
 support, or `domain_gfx.es2015.js`, for ES2015 support.
@@ -48,12 +57,12 @@ API:
 ### Syntax
 
 ```js
-new DomainGfx([parameters])
+new DomainGfx(userParameters);
 ```
 
 #### Parameters
 
- - **parameters**, `object`: contains information to render the graphic
+ - **userParameters**, `object`: contains information to render the graphic
 
    - **parent**, `Element`: container element for the graphic
 
