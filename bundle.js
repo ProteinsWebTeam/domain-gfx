@@ -3046,6 +3046,7 @@ class DomainGFX {
     this._canvas = this._createCanvas();
     this._parent.replaceChild(this._canvas, prevCanvas);
     this._draw();
+    return this._data;
   }
 
 }
