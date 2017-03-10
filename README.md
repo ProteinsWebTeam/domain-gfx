@@ -4,7 +4,7 @@ Domain graphics library
 _in development_
 
 A live example is available to play with at
-[https://proteinswebteam.github.io/domain_gfx/]()
+[https://proteinswebteam.github.io/domain_gfx/](https://proteinswebteam.github.io/domain_gfx/)
 
 Installation:
 -------------
@@ -14,7 +14,7 @@ This library is available on npm, to install it run:
 `npm install --save domain-gfx`
 
 Otherwise, you can use it directly from the unpkg CDN at
-[`https://unpkg.com/domain-gfx`]()
+[https://unpkg.com/domain-gfx](https://unpkg.com/domain-gfx)
 
 Usage:
 ------

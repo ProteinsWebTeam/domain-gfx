@@ -3,11 +3,11 @@ const fs = require('fs');
 
 const filesize = require('filesize');
 const rollup = require('rollup');
-const babel = require('rollup-plugin-babel');
+const rollupBabel = require('rollup-plugin-babel');
 const nodeResolve = require('rollup-plugin-node-resolve');
+const babel = require('babel-core');
 const chalk = require('chalk');
 
-let cache;
 const distFolder = 'dist';
 
 if (!fs.existsSync(distFolder)) {
@@ -15,15 +15,13 @@ if (!fs.existsSync(distFolder)) {
 }
 
 const configs = [
-  [
-    {
+  {
+    config: {
       entry: path.resolve('src', 'index.js'),
-      cache,
       plugins: [
         nodeResolve(),
-        babel({
+        rollupBabel({
           presets: [
-            'babili',
             'es2015-rollup',
             'es2016',
             'es2017',
@@ -32,17 +30,16 @@ const configs = [
         }),
       ]
     },
-    path.resolve(distFolder, 'domain_gfx.es5.js'),
-  ],
-  [
-    {
+    dest: path.resolve(distFolder, 'domain_gfx.es5.js'),
+  },
+  {
+    config: {
       entry: path.resolve('src', 'index.js'),
-      cache,
       plugins: [
         nodeResolve(),
-        babel({
+        rollupBabel({
+          plugins: ['external-helpers'],
           presets: [
-            'babili',
             'es2016',
             'es2017',
             'stage-2',
@@ -50,27 +47,34 @@ const configs = [
         }),
       ]
     },
-    path.resolve(distFolder, 'domain_gfx.es2015.js'),
-  ],
+    dest: path.resolve(distFolder, 'domain_gfx.es2015.js'),
+  },
 ];
 
-(async () => {
-  for (const [config, dest] of configs) {
-    const bundle = await rollup.rollup(config);
-
-    cache = bundle;
-
-    await bundle.write({
+Promise.all(configs.map(
+  ({config, dest}) => rollup.rollup(config).then(bundle => {
+    const rolledUp = bundle.generate({
       format: 'iife',
       moduleName: 'DomainGfx',
       sourceMap: true,
-      dest
+      sourceMapFile: dest,
     });
+
+    const {code, map} = babel.transform(rolledUp.code, {
+      inputSourceMap: rolledUp.map,
+      presets: ['babili'],
+    });
+
+    fs.writeFileSync(dest, `${code}\n//# sourceMappingURL=${dest}.map`);
+    fs.writeFileSync(`${dest}.map`, map.toString());
 
     console.log(
       chalk.green(`compiled to ${dest} (${filesize(fs.statSync(dest).size)})`)
     );
-  }
-
+  }))
+).then(() => {
   console.log(chalk.green.bold('success ✔'));
-})();
+}).catch(err => {
+  console.error(chalk.red.bold('Something bad happened'));
+  console.error(err);
+});

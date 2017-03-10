@@ -14,11 +14,16 @@
     "jsdom": "^9.11.0",
     "lodash-es": "^4.17.4"
   },
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 7"
+  },
   "files": [
     "dist",
     "src"
   ],
   "devDependencies": {
+    "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",
     "babel-jest": "^19.0.0",
     "babel-plugin-external-helpers": "^6.22.0",
@@ -67,7 +72,7 @@
   },
   "scripts": {
     "prebuild": "npm run test",
-    "build": "node --harmony-async-await scripts/build.js",
+    "build": "node scripts/build.js",
     "build:demo": "node --harmony-async-await scripts/demo.js",
     "start": "node --harmony-async-await scripts/start.js",
     "test": "npm run test:lint && npm run test:flow && npm run test:jest",
