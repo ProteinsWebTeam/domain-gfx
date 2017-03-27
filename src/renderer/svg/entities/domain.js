@@ -2,6 +2,7 @@
 import PathData from '../utils/pathData';
 import {path, rectangle, group, mask, text as textEl} from '../svg';
 import gradientMaker from '../utils/gradient';
+import bestContrast from '../../../utils/colorContrast';
 import uniqueId from '../../../utils/uniqueId';
 
 const height = 10;
@@ -125,7 +126,10 @@ const envelope = ({start, aliStart, aliEnd, end, residueWidth}) => {
 };
 
 export default (
-  {start, aliStart, aliEnd, end, startStyle, endStyle, color, text, gradient}
+  {
+    start, aliStart, aliEnd, end, startStyle, endStyle,
+    color, text, textColor, gradient,
+  }
   /*: {
     start: number,
     aliStart: ?number,
@@ -135,6 +139,7 @@ export default (
     endStyle: ?string,
     color: string | Array<string>,
     text: ?string,
+    textColor: ?string,
     gradient: ?boolean,
   } */,
   residueWidth/*: number */,
@@ -162,7 +167,7 @@ export default (
       'text-anchor': 'middle',
       'font-size': 7.5,
       'font-family': 'Sans-Serif',
-      fill: '#000',
+      fill: textColor || bestContrast(Array.isArray(color) ? color[0] : color),
       opacity: 0,
     },
     text || ''

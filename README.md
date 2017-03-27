@@ -186,5 +186,3 @@ Todo:
  - [ ] Add more unit tests
  - [ ] Add TravisCI integration
  - [ ] Handle parameters (entity/text sizes, x/y scale, etc)
- - [ ] Automatic color choice for text according to best contrast with
- background

@@ -45,6 +45,12 @@ export default class DomainGFX {
     this._renderer.drawSequence(
       this._data.length * this._params.image.width.residue
     );
+    // draw hits
+    for (const hit of this._data.hits || []) {
+      if (isHidden(hit)) continue;
+      this._renderer.drawHit(hit, this._params.image.width.residue);
+      needsTooltips = true;
+    }
     // draw regions
     for (const region of this._data.regions || []) {
       if (isHidden(region)) continue;

@@ -4,6 +4,14 @@
   // Example 1
   const data1 = {
     length: 400,
+    hits: [
+      {
+        qstart: 2,
+        qend: 10,
+        tstart: 10,
+        tend: 58,
+      }
+    ],
     regions: [
       {
         type: 'pfama',

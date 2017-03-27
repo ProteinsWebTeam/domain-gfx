@@ -8,6 +8,10 @@ export default (data/*: Object */) => {
   const description = _data.description;
   const source = _data.database || _data.source;
   const position = _data.start;
+  const targetStart = _data.targetStart || _data.tStart || _data.tstart;
+  const targetEnd = _data.targetEnd || _data.tEnd || _data.tend;
+  const queryStart = _data.queryStart || _data.qStart || _data.qstart;
+  const queryEnd = _data.queryEnd || _data.qEnd || _data.qend;
   let coordinates;
   if (_data.end) {
     const length = _data.end - _data.start;
@@ -33,7 +37,7 @@ export default (data/*: Object */) => {
       <thead>
         <tr>
           <th colspan="2">
-            ${mainTitle}
+            ${mainTitle || (targetStart && 'Match coordinates')}
             ${(subTitle && subTitle !== mainTitle) ? ` (${subTitle})` : ''}
           </th>
         </tr>
@@ -51,7 +55,7 @@ export default (data/*: Object */) => {
           <td class="coordinates">${coordinates}</td>
         </tr>
         ` : ''}
-        ${!coordinates ? `
+        ${(!coordinates && position) ? `
         <tr>
           <td>Position:</td>
           <td>${position}</td>
@@ -61,6 +65,18 @@ export default (data/*: Object */) => {
         <tr>
           <td>Source:</td>
           <td>${source}</td>
+        </tr>
+        ` : ''}
+        ${targetStart ? `
+        <tr>
+          <td>Target:</td>
+          <td>${targetStart}${targetEnd ? ` - ${targetEnd}` : ''}</td>
+        </tr>
+        ` : ''}
+        ${queryStart ? `
+        <tr>
+          <td>Query:</td>
+          <td>${queryStart}${queryEnd ? ` - ${queryEnd}` : ''}</td>
         </tr>
         ` : ''}
       </tbody>

@@ -4,13 +4,14 @@ import {
 } from './svg';
 import markup from './entities/markup';
 import sequence from './entities/sequence';
+import hit from './entities/hit';
 import domain from './entities/domain';
 import motif from './entities/motif';
 import ns from '../../utils/namespace';
 import uniqueId from '../../utils/uniqueId';
 
-const connectData = (entity, data) => {
-  if (!(window && (data.tooltip || data.metadata))) return;
+const connectData = (entity, data, always = false) => {
+  if (!(window && (data.tooltip || data.metadata || always))) return;
   for (const element of entity.querySelectorAll(':not(g)')) {
     element[ns] = data;
   }
@@ -84,6 +85,21 @@ export default class SvgRenderer {
       })
     );
     g.dataset.entity = 'sequence';
+    this._canvas.appendChild(g);
+  };
+
+  drawHit = (h, residueWidth) => {
+    const g = group(
+      {transform: `translate(${h.tstart * residueWidth}, 16)`},
+      hit({
+        position: {x: 0, y: 0},
+        length: (h.tend - h.tstart) * residueWidth,
+        height: 2,
+        color: h.color,
+      })
+    );
+    g.dataset.entity = 'hit';
+    connectData(g, h, true);
     this._canvas.appendChild(g);
   };
 
