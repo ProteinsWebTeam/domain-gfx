@@ -4,7 +4,7 @@ Domain graphics library
 _in development_
 
 A live example is available to play with at
-[https://proteinswebteam.github.io/domain_gfx/](https://proteinswebteam.github.io/domain_gfx/)
+[https://proteinswebteam.github.io/domain-gfx/](https://proteinswebteam.github.io/domain-gfx/)
 
 Installation:
 -------------
