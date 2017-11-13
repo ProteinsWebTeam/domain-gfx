@@ -16,7 +16,7 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">= 7"
+    "node": ">= 8"
   },
   "files": [
     "dist",
@@ -73,14 +73,14 @@
   "scripts": {
     "prebuild": "npm run test",
     "build": "node scripts/build.js",
-    "build:demo": "node --harmony-async-await scripts/demo.js",
-    "start": "node --harmony-async-await scripts/start.js",
+    "build:demo": "node scripts/demo.js",
+    "start": "node scripts/start.js",
     "test": "npm run test:lint && npm run test:flow && npm run test:jest",
     "test:lint": "eslint --color --ignore-path .gitignore \"./**/*.js\" --ignore-pattern demo",
     "test:flow": "flow check",
-    "test:jest": "NODE_PATH=$NODE_PATH:./src node --harmony-async-await $(npm bin)/jest",
+    "test:jest": "NODE_PATH=$NODE_PATH:./src node $(npm bin)/jest",
     "publish:demo": "git subtree push --prefix demo origin gh-pages",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "domain",
