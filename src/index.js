@@ -105,6 +105,11 @@ export default class DomainGFX {
   }
 }
 
-// Dispatches event on document when library has loaded
-// This way user can wait for async load, and when event fires, call the lib
-document.dispatchEvent(new CustomEvent('domainGfxReady', {detail: DomainGFX}));
+try {
+  // Dispatches event on document when library has loaded
+  // This way user can wait for async load, and when event fires, call the lib
+  document.dispatchEvent(new CustomEvent('domainGfxReady', {detail: DomainGFX}));
+} catch (_) {
+  // unsupported browser, you should hook to this script's load event
+  // e.g.: <script onload="functionUsingDomainGfx();">
+}

@@ -13,9 +13,11 @@ const _svg = (name/*: string */) => (
   // Create element
   const element = document.createElementNS(svgNamespace, name);
   // Set attributes
-  for (const [attribute, value] of Object.entries(attributes || {})) {
+  const keys = Object.keys(attributes || {});
+  for (const key of keys) {
+    const value = attributes[key];
     if (value || value === 0) {
-      element.setAttribute(attribute, String(value));
+      element.setAttribute(key, String(value));
     }
   }
   // Add children
