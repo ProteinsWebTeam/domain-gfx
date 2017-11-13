@@ -30,6 +30,14 @@ by importing it into your code like this:
 import DomainGfx from 'domain-gfx';
 ```
 
+**IE Support**
+
+To support IE, insert the polyfills in your page
+
+```html
+<script src="https://polyfill.io/v2/polyfill.js?features=Set,Array.prototype.@@iterator"></script>
+```
+
 ### Using a global
 
 you can insert the script in your page, synchronously or not. It will
