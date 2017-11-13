@@ -35,7 +35,7 @@ import DomainGfx from 'domain-gfx';
 To support IE, insert the polyfills in your page
 
 ```html
-<script src="https://polyfill.io/v2/polyfill.js?features=Set,Array.prototype.@@iterator"></script>
+<script src="https://polyfill.io/v2/polyfill.js?features=Array.prototype.includes,Array.prototype.@@iterator"></script>
 ```
 
 ### Using a global
