@@ -107,4 +107,7 @@ export default class DomainGFX {
 
 // Dispatches event on document when library has loaded
 // This way user can wait for async load, and when event fires, call the lib
-document.dispatchEvent(new CustomEvent('domainGfxReady', {detail: DomainGFX}));
+
+// this line will cause TypeError in IE, CustomEvent constructor not supported in IE
+// user can call the lib in <script onload="?">
+// document.dispatchEvent(new CustomEvent('domainGfxReady', {detail: DomainGFX}));

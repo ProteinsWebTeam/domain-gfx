@@ -4,6 +4,7 @@ import {path, rectangle, group, mask, text as textEl} from '../svg';
 import gradientMaker from '../utils/gradient';
 import bestContrast from '../../../utils/colorContrast';
 import uniqueId from '../../../utils/uniqueId';
+import dataset from '../../../utils/dataset';
 
 const height = 10;
 const radius = height / 2;
@@ -172,9 +173,7 @@ export default (
     },
     text || ''
   );
-  if (textElement.dataset instanceof Object) {
-    textElement.dataset.maxwidth = (end - start) * residueWidth;
-  }
+  dataset(textElement).set('maxwidth', (end - start) * residueWidth);
   return group(
     null,
     domain({

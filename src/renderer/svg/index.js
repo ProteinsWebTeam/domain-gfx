@@ -8,6 +8,7 @@ import hit from './entities/hit';
 import domain from './entities/domain';
 import motif from './entities/motif';
 import ns from '../../utils/namespace';
+import dataset from '../../utils/dataset';
 import uniqueId from '../../utils/uniqueId';
 
 const connectData = (entity, data, always = false) => {
@@ -69,7 +70,7 @@ export default class SvgRenderer {
       {transform: `translate(${m.start * residueWidth}, 10)`},
       markup(m, residueWidth)
     );
-    g.dataset.entity = 'markup';
+    dataset(g).set('entity', 'markup');
     connectData(g, m);
     this._canvas.appendChild(g);
   };
@@ -84,7 +85,7 @@ export default class SvgRenderer {
         color: '#d8d8d8',
       })
     );
-    g.dataset.entity = 'sequence';
+    dataset(g).set('entity', 'sequence');
     this._canvas.appendChild(g);
   };
 
@@ -98,7 +99,7 @@ export default class SvgRenderer {
         color: h.color,
       })
     );
-    g.dataset.entity = 'hit';
+    dataset(g).set('entity', 'hit');
     connectData(g, h, true);
     this._canvas.appendChild(g);
   };
@@ -108,15 +109,15 @@ export default class SvgRenderer {
       {transform: `translate(${region.start * residueWidth}, 5)`},
       domain(region, residueWidth, this._spotlight, this._addToDefs)
     );
-    g.dataset.entity = 'region';
+    dataset(g).set('entity', 'region');
     connectData(g, region);
     this._canvas.appendChild(g);
     const textToFit = g.querySelector('[data-maxwidth]');
     if (!textToFit) return;
-    if (textToFit.getBBox().width <= +textToFit.dataset.maxwidth) {
+    if (textToFit.getBBox().width <= +(dataset(textToFit).get('maxwidth') - 0)) {
       textToFit.setAttribute('opacity', 1);
     } else {
-      textToFit.parentElement.removeChild(textToFit);
+      textToFit.parentElement && textToFit.parentElement.removeChild(textToFit);
     }
   };
 

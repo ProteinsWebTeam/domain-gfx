@@ -1,4 +1,5 @@
 import ns from '../utils/namespace';
+import dataset from '../utils/dataset';
 import getStyleSheet from './style';
 import dataToMarkup from './dataToMarkup';
 
@@ -7,7 +8,7 @@ const className = 'domain_gfx__tooltip';
 
 const getEntityBBox = target => {
   if (!target) throw new Error('No entity found in the whole tree');
-  if (!target.dataset.entity) {
+  if (!dataset(target).get('entity')) {
     return getEntityBBox(target.parentElement);
   }
   return target.getBoundingClientRect();
