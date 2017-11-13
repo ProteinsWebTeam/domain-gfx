@@ -1,5 +1,6 @@
-/* globals DomainGfx: false */
 /* eslint no-new: off */
+import DomainGfx from '../src/index';
+
 {
   // Example 1
   const data1 = {
@@ -10,7 +11,7 @@
         qend: 10,
         tstart: 10,
         tend: 58,
-      }
+      },
     ],
     regions: [
       {
@@ -36,11 +37,11 @@
         end: 250,
         aliStart: 215,
         aliEnd: 245,
-      }
+      },
     ],
   };
   const cont1 = document.getElementById('1');
-  new DomainGfx({parent: cont1, data: data1});
+  new DomainGfx({ parent: cont1, data: data1 });
 
   // Example 2
   const data2 = {
@@ -75,11 +76,11 @@
         endStyle: 'jagged',
         start: 210,
         end: 350,
-      }
-    ]
+      },
+    ],
   };
   const cont2 = document.getElementById('2');
-  new DomainGfx({parent: cont2, data: data2});
+  new DomainGfx({ parent: cont2, data: data2 });
 
   // Example 3
   const data3 = {
@@ -93,7 +94,7 @@
         startStyle: 'straight',
         endStyle: 'straight',
         start: 2,
-        end: 34
+        end: 34,
       },
       {
         type: 'pfama',
@@ -103,7 +104,7 @@
         startStyle: 'straight',
         endStyle: 'straight',
         start: 82,
-        end: 118
+        end: 118,
       },
       {
         type: 'pfama',
@@ -113,7 +114,7 @@
         startStyle: 'straight',
         endStyle: 'straight',
         start: 120,
-        end: 155
+        end: 155,
       },
       {
         type: 'pfama',
@@ -123,12 +124,12 @@
         startStyle: 'straight',
         endStyle: 'straight',
         start: 159,
-        end: 195
-      }
-    ]
+        end: 195,
+      },
+    ],
   };
   const cont3 = document.getElementById('3');
-  new DomainGfx({parent: cont3, data: data3});
+  new DomainGfx({ parent: cont3, data: data3 });
 
   // Example 4
   const data4 = {
@@ -142,7 +143,7 @@
         startStyle: 'curved',
         endStyle: 'jagged',
         start: 5,
-        end: 80
+        end: 80,
       },
       {
         type: 'pfama',
@@ -152,7 +153,7 @@
         startStyle: 'curved',
         endStyle: 'curved',
         start: 81,
-        end: 135
+        end: 135,
       },
       {
         type: 'pfama',
@@ -162,8 +163,8 @@
         startStyle: 'jagged',
         endStyle: 'curved',
         start: 136,
-        end: 197
-      }
+        end: 197,
+      },
     ],
     markups: [
       {
@@ -172,12 +173,12 @@
         display: true,
         v_align: 'top',
         start: 76,
-        end: 136
-      }
-    ]
+        end: 136,
+      },
+    ],
   };
   const cont4 = document.getElementById('4');
-  new DomainGfx({parent: cont4, data: data4});
+  new DomainGfx({ parent: cont4, data: data4 });
 
   // Example 5
   const data5 = {
@@ -188,47 +189,47 @@
         colour: '#ff9c00',
         display: true,
         start: 1,
-        end: 27
+        end: 27,
       },
       {
         type: 'low_complexity',
         colour: '#0FF',
         display: true,
         start: 39,
-        end: 47
+        end: 47,
       },
       {
         type: 'low_complexity',
         colour: '#0FF',
         display: true,
         start: 67,
-        end: 76
+        end: 76,
       },
       {
         type: 'coiled_coil',
         colour: '#9cff00',
         display: true,
         start: 103,
-        end: 123
+        end: 123,
       },
       {
         type: 'transmembrane',
         colour: '#F00',
         display: true,
         start: 155,
-        end: 175
+        end: 175,
       },
       {
         type: 'transmembrane',
         colour: '#F00',
         display: true,
         start: 180,
-        end: 195
-      }
-    ]
+        end: 195,
+      },
+    ],
   };
   const cont5 = document.getElementById('5');
-  new DomainGfx({parent: cont5, data: data5});
+  new DomainGfx({ parent: cont5, data: data5 });
 
   // Example 6
   const data6 = {
@@ -251,10 +252,10 @@
           database: 'pfam',
           identifier: 'Inhibitor_I29',
           type: 'Domain',
-          start: 48
+          start: 48,
         },
         type: 'pfama',
-        start: 48
+        start: 48,
       },
       {
         colour: '#c00f0f',
@@ -274,11 +275,11 @@
           database: 'pfam',
           identifier: 'Peptidase_C1',
           type: 'Domain',
-          start: 134
+          start: 134,
         },
         type: 'pfama',
-        start: 134
-      }
+        start: 134,
+      },
     ],
     markups: [
       {
@@ -291,10 +292,10 @@
           database: 'pfam',
           type: 'Disulphide, 155-196',
           end: 196,
-          start: 155
+          start: 155,
         },
         type: 'Disulphide',
-        start: 155
+        start: 155,
       },
       {
         lineColour: '#CCC',
@@ -306,10 +307,10 @@
           database: 'pfam',
           type: 'Disulphide, 189-228',
           end: 228,
-          start: 189
+          start: 189,
         },
         type: 'Disulphide',
-        start: 189
+        start: 189,
       },
       {
         lineColour: '#CCC',
@@ -321,10 +322,10 @@
           database: 'pfam',
           type: 'Disulphide, 286-333',
           end: 333,
-          start: 286
+          start: 286,
         },
         type: 'Disulphide',
-        start: 286
+        start: 286,
       },
       {
         lineColour: '#000',
@@ -337,9 +338,9 @@
         metadata: {
           database: 'pfam',
           description: 'Active site, C158',
-          start: 158
+          start: 158,
         },
-        start: 158
+        start: 158,
       },
       {
         lineColour: '#000',
@@ -352,9 +353,9 @@
         metadata: {
           database: 'pfam',
           description: 'Pfam predicted active site, H292',
-          start: 292
+          start: 292,
         },
-        start: 292
+        start: 292,
       },
       {
         lineColour: '#000',
@@ -367,10 +368,10 @@
         metadata: {
           database: 'pfam',
           description: 'Pfam predicted active site, N308',
-          start: 308
+          start: 308,
         },
-        start: 308
-      }
+        start: 308,
+      },
     ],
     motifs: [
       {
@@ -379,17 +380,17 @@
           database: 'seq',
           type: 'Signal peptide',
           end: 26,
-          start: 1
+          start: 1,
         },
         type: 'sig_p',
         display: true,
         end: 26,
-        start: 1
-      }
-    ]
+        start: 1,
+      },
+    ],
   };
   const cont6 = document.getElementById('6');
-  new DomainGfx({parent: cont6, data: data6});
+  new DomainGfx({ parent: cont6, data: data6 });
 
   // Example 7
   const data7 = {
@@ -402,7 +403,7 @@
         v_align: 'top',
         headStyle: 'square',
         type: 'Red square, above sequence',
-        start: 20
+        start: 20,
       },
       {
         lineColour: '#F00',
@@ -411,7 +412,7 @@
         v_align: 'bottom',
         headStyle: 'square',
         type: 'Purple square, red line, below sequence',
-        start: 40
+        start: 40,
       },
       {
         lineColour: '#666',
@@ -420,7 +421,7 @@
         v_align: 'top',
         headStyle: 'diamond',
         type: 'Red diamond, above sequence',
-        start: 60
+        start: 60,
       },
       {
         lineColour: '#666',
@@ -429,7 +430,7 @@
         v_align: 'bottom',
         headStyle: 'circle',
         type: 'Green circle, below sequence',
-        start: 80
+        start: 80,
       },
       {
         lineColour: '#666',
@@ -438,7 +439,7 @@
         v_align: 'top',
         headStyle: 'arrow',
         type: 'Green arrow, above sequence',
-        start: 100
+        start: 100,
       },
       {
         lineColour: '#666',
@@ -447,7 +448,7 @@
         v_align: 'bottom',
         headStyle: 'pointer',
         type: 'Blue pointer, below sequence',
-        start: 120
+        start: 120,
       },
       {
         lineColour: '#666',
@@ -456,12 +457,12 @@
         v_align: 'top',
         headStyle: 'line',
         type: 'Orange line, above sequence',
-        start: 140
-      }
-    ]
+        start: 140,
+      },
+    ],
   };
   const cont7 = document.getElementById('7');
-  new DomainGfx({parent: cont7, data: data7});
+  new DomainGfx({ parent: cont7, data: data7 });
 
   // Example 8
   const data8 = {
@@ -490,11 +491,11 @@
           identifier: 'Peptidase_S8',
           type: 'Domain',
           aliStart: 163,
-          start: 159
+          start: 159,
         },
         type: 'pfama',
         aliStart: 163,
-        start: 159
+        start: 159,
       },
       {
         modelStart: 5,
@@ -519,11 +520,11 @@
           identifier: 'Peptidase_S8',
           type: 'Domain',
           aliStart: 163,
-          start: 159
+          start: 159,
         },
         type: 'pfama',
         aliStart: 470,
-        start: 470
+        start: 470,
       },
       {
         modelStart: 12,
@@ -548,11 +549,11 @@
           identifier: 'PA',
           type: 'Family',
           aliStart: 385,
-          start: 362
+          start: 362,
         },
         type: 'pfama',
         aliStart: 385,
-        start: 362
+        start: 362,
       },
       {
         modelStart: 1,
@@ -577,12 +578,12 @@
           identifier: 'DUF1034',
           type: 'Domain',
           aliStart: 613,
-          start: 613
+          start: 613,
         },
         type: 'pfama',
         aliStart: 613,
-        start: 613
-      }
+        start: 613,
+      },
     ],
     markups: [
       {
@@ -595,10 +596,10 @@
           database: 'pfam',
           type: 'Link between discontinous regions',
           end: 470,
-          start: 361
+          start: 361,
         },
         type: 'Nested',
-        start: 361
+        start: 361,
       },
       {
         lineColour: '#333333',
@@ -611,9 +612,9 @@
         metadata: {
           database: 'pfam',
           description: 'S Pfam predicted active site',
-          start: 538
+          start: 538,
         },
-        start: 538
+        start: 538,
       },
       {
         lineColour: '#333333',
@@ -626,9 +627,9 @@
         metadata: {
           database: 'pfam',
           description: 'D Pfam predicted active site',
-          start: 185
+          start: 185,
         },
-        start: 185
+        start: 185,
       },
       {
         lineColour: '#333333',
@@ -641,10 +642,10 @@
         metadata: {
           database: 'pfam',
           description: 'H Pfam predicted active site',
-          start: 235
+          start: 235,
         },
-        start: 235
-      }
+        start: 235,
+      },
     ],
     metadata: {
       database: 'uniprot',
@@ -652,7 +653,7 @@
       organism: 'Cryptococcus neoformans (Filobasidiella neoformans)',
       description: 'Putative uncharacterized protein',
       taxid: 5207,
-      accession: 'Q560V8'
+      accession: 'Q560V8',
     },
     motifs: [
       {
@@ -661,12 +662,12 @@
           database: 'Phobius',
           type: 'sig_p',
           end: 23,
-          start: 1
+          start: 1,
         },
         type: 'sig_p',
         display: true,
         end: 23,
-        start: 1
+        start: 1,
       },
       {
         colour: '#00ffff',
@@ -675,12 +676,12 @@
           type: 'low_complexity',
           score: '2.5100',
           end: 21,
-          start: 3
+          start: 3,
         },
         type: 'low_complexity',
         display: false,
         end: 21,
-        start: 3
+        start: 3,
       },
       {
         colour: '#86bcff',
@@ -689,12 +690,12 @@
           type: 'low_complexity',
           score: '1.4900',
           end: 156,
-          start: 134
+          start: 134,
         },
         type: 'low_complexity',
         display: true,
         end: 156,
-        start: 134
+        start: 134,
       },
       {
         colour: '#00ffff',
@@ -703,12 +704,12 @@
           type: 'low_complexity',
           score: '2.0200',
           end: 187,
-          start: 173
+          start: 173,
         },
         type: 'low_complexity',
         display: false,
         end: 187,
-        start: 173
+        start: 173,
       },
       {
         colour: '#00ffff',
@@ -717,12 +718,12 @@
           type: 'low_complexity',
           score: '2.0800',
           end: 218,
-          start: 207
+          start: 207,
         },
         type: 'low_complexity',
         display: false,
         end: 218,
-        start: 207
+        start: 207,
       },
       {
         colour: '#00ffff',
@@ -731,12 +732,12 @@
           type: 'low_complexity',
           score: '2.1300',
           end: 231,
-          start: 220
+          start: 220,
         },
         type: 'low_complexity',
         display: false,
         end: 231,
-        start: 220
+        start: 220,
       },
       {
         colour: '#00ffff',
@@ -745,12 +746,12 @@
           type: 'low_complexity',
           score: '2.0000',
           end: 554,
-          start: 538
+          start: 538,
         },
         type: 'low_complexity',
         display: false,
         end: 554,
-        start: 538
+        start: 538,
       },
       {
         colour: '#86bcff',
@@ -759,12 +760,12 @@
           type: 'low_complexity',
           score: '1.9100',
           end: 590,
-          start: 578
+          start: 578,
         },
         type: 'low_complexity',
         display: true,
         end: 590,
-        start: 588
+        start: 588,
       },
       {
         colour: '#00ffff',
@@ -773,12 +774,12 @@
           type: 'low_complexity',
           score: '1.7600',
           end: 831,
-          start: 822
+          start: 822,
         },
         type: 'low_complexity',
         display: false,
         end: 831,
-        start: 822
+        start: 822,
       },
       {
         colour: ['#ff7ff0', '#f2ff7f', '#7ff2ff'],
@@ -790,14 +791,14 @@
           type: 'Pfam-B',
           start: 791,
           end: 949,
-          accession: 'PB075017'
+          accession: 'PB075017',
         },
         start: 791,
         end: 949,
-        display: true
-      }
-    ]
+        display: true,
+      },
+    ],
   };
   const cont8 = document.getElementById('8');
-  new DomainGfx({parent: cont8, data: data8});
+  new DomainGfx({ parent: cont8, data: data8 });
 }

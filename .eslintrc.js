@@ -1,26 +1,27 @@
 const PROD = process.env.NODE_ENV === 'production';
 
-const rules= {
-  'comma-dangle': ['warn', 'only-multiline'],
-  'object-property-newline': ['off'],
-  'semi': ['warn', 'always', {omitLastInOneLineBlock: true}],
-  'spaced-comment': ['warn', 'always', {markers: [':', '::']}],
-};
-
-if (!PROD) {
-  rules['no-debugger'] = ['off'];
-}
-
 module.exports = {
-  extends: ['standard', 'plugin:import/errors', 'plugin:import/warnings',],
-  plugins: ['import'],
+  env: {
+    browser: true,
+    es6: true,
+  },
+  extends: [
+    'eslint:recommended',
+    'prettier',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+  ],
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2017,
     sourceType: 'module',
+    ecmaFeatures: {
+      modules: true,
+    },
   },
-  rules,
-  env: {
-    browser: true,
+  rules: {
+    'object-property-newline': ['off'],
+    'spaced-comment': ['warn', 'always', { markers: [':', '::'] }],
+    'no-debugger': [PROD ? 'on' : 'off'],
   },
 };

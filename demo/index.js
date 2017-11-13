@@ -2,7 +2,7 @@
 import DomainGfx from '../src/index.js';
 import debounce from 'lodash-es/debounce';
 
-(async (jsonFileContent) => {
+(async jsonFileContent => {
   // DOM elements
   const textArea = document.querySelector('.data textarea');
   const visu = document.querySelector('.visu');
@@ -19,20 +19,21 @@ import debounce from 'lodash-es/debounce';
       data = JSON.parse(text);
     } catch (err) {
       invalid.classList.remove('hidden');
+      // eslint-disable-next-line no-console
       console.error(err);
       return;
     }
     if (dg) {
       dg.data = data;
     } else {
-      dg = new DomainGfx({parent: visu, data});
+      dg = new DomainGfx({ parent: visu, data });
     }
     invalid.classList.add('hidden');
   };
 
   // CodeMirror logic
   textArea.value = await jsonFileContent;
-  const cm = CodeMirror.fromTextArea(textArea, {lineNumbers: true});
+  const cm = CodeMirror.fromTextArea(textArea, { lineNumbers: true });
   cm.on('change', debounce(updateView, 1000));
 
   // Kicks off first render

@@ -1,3 +1,4 @@
+/* global global: false */
 const uniqueId = require('utils/uniqueId').default;
 
 describe('uniqueId', () => {

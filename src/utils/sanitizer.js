@@ -1,18 +1,31 @@
 // @flow
-const keyNumbers = [
-  'start', 'end', 'aliStart', 'aliEnd', 'modelStart', 'modelEnd',
-  'length', 'level',
-  'tStart', 'tEnd', 'qStart', 'qEnd', 'tstart', 'tend', 'qstart', 'qend',
-];
+const keyNumbers = new Set([
+  'start',
+  'end',
+  'aliStart',
+  'aliEnd',
+  'modelStart',
+  'modelEnd',
+  'length',
+  'level',
+  'tStart',
+  'tEnd',
+  'qStart',
+  'qEnd',
+  'tstart',
+  'tend',
+  'qstart',
+  'qend',
+]);
 const colour = /(^.*colo)u(r.*$)/i;
 const falseString = /^f(alse)?$/i;
 
-const sanitizer = (data/*: Object */) => {
+const sanitizer = (data /*: Object */) => {
   const output = {};
   for (const [rawKey, rawValue] of Object.entries(data)) {
     let [key, value] = [rawKey, rawValue];
     // process numbers
-    if (keyNumbers.includes(key)) {
+    if (keyNumbers.has(key)) {
       value = +value;
       if (isNaN(value)) {
         throw new Error(
