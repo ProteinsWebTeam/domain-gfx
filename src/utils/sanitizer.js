@@ -9,9 +9,7 @@ const falseString = /^f(alse)?$/i;
 
 const sanitizer = (data/*: Object */) => {
   const output = {};
-  const keys = Object.keys(data);
-  for (const rawKey of keys) {
-    const rawValue = data[rawKey];
+  for (const [rawKey, rawValue] of Object.entries(data)) {
     let [key, value] = [rawKey, rawValue];
     // process numbers
     if (keyNumbers.has(key)) {
