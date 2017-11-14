@@ -1,0 +1,68 @@
+{
+  "length": 200,
+  "markups": [
+    {
+      "lineColour": "#666",
+      "colour": "#F36",
+      "display": true,
+      "v_align": "top",
+      "headStyle": "square",
+      "type": "Red square, above sequence",
+      "start": 20
+    },
+    {
+      "lineColour": "#F00",
+      "colour": "#F0F",
+      "display": true,
+      "v_align": "bottom",
+      "headStyle": "square",
+      "type": "Purple square, red line, below sequence",
+      "start": 40
+    },
+    {
+      "lineColour": "#666",
+      "colour": "#F00",
+      "display": true,
+      "v_align": "top",
+      "headStyle": "diamond",
+      "type": "Red diamond, above sequence",
+      "start": 60
+    },
+    {
+      "lineColour": "#666",
+      "colour": "#0F0",
+      "display": true,
+      "v_align": "bottom",
+      "headStyle": "circle",
+      "type": "Green circle, below sequence",
+      "start": 80
+    },
+    {
+      "lineColour": "#666",
+      "colour": "#0F0",
+      "display": true,
+      "v_align": "top",
+      "headStyle": "arrow",
+      "type": "Green arrow, above sequence",
+      "start": 100
+    },
+    {
+      "lineColour": "#666",
+      "colour": "#08F",
+      "display": true,
+      "v_align": "bottom",
+      "headStyle": "pointer",
+      "type": "Blue pointer, below sequence",
+      "start": 120
+    },
+    {
+      "lineColour": "#666",
+      "colour": "#F80",
+      "display": true,
+      "v_align": "top",
+      "headStyle": "line",
+      "type": "Orange line, above sequence",
+      "start": 140
+    }
+  ]
+}

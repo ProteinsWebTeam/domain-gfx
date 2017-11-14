@@ -7,9 +7,13 @@ const pkg = require(path.resolve(__dirname, 'package.json'));
 
 module.exports = (env = { dev: true }) => {
   const mainConfig = {
-    entry: path.resolve(__dirname, env.dev ? 'dev_demo' : 'src', 'index.js'),
+    entry: path.resolve(
+      __dirname,
+      env.dev || env.demo ? `${env.dev ? 'dev_' : ''}demo` : 'src',
+      'index.js'
+    ),
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, env.demo ? 'demo' : 'dist'),
       filename: `${pkg.name}.js`,
       library: 'DomainGfx',
     },
@@ -29,10 +33,14 @@ module.exports = (env = { dev: true }) => {
           })
         : null,
       env.dev ? new webpack.HotModuleReplacementPlugin() : null,
-      env.dev
+      env.dev || env.demo
         ? new (require('html-webpack-plugin'))({
             title: pkg.name,
-            template: path.join(__dirname, 'dev_demo', 'index.html'),
+            template: path.join(
+              __dirname,
+              `${env.dev ? 'dev_' : ''}demo`,
+              'index.template.html'
+            ),
           })
         : null,
     ].filter(Boolean),
@@ -45,10 +53,34 @@ module.exports = (env = { dev: true }) => {
       rules: [
         {
           test: /\.js$/i,
-          include: [path.resolve(__dirname, 'src')],
+          exclude: [path.resolve(__dirname, 'node_modules')],
           use: [
             {
               loader: 'babel-loader',
+              options: {
+                presets: [
+                  [
+                    'env',
+                    {
+                      targets: {
+                        browsers: ['last 2 versions', '>0.1%'],
+                      },
+                      modules: false,
+                      useBuiltIns: 'usage',
+                    },
+                  ],
+                  'stage-2',
+                ],
+                cacheDirectory: true,
+              },
+            },
+          ],
+        },
+        {
+          test: /\.json$/i,
+          use: [
+            {
+              loader: 'json-loader',
             },
           ],
         },

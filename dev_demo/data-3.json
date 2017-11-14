@@ -1,0 +1,45 @@
+{
+  "length": 200,
+  "regions": [
+    {
+      "type": "pfama",
+      "text": "HEAT",
+      "colour": "#1fc01f",
+      "display": true,
+      "startStyle": "straight",
+      "endStyle": "straight",
+      "start": 2,
+      "end": 34
+    },
+    {
+      "type": "pfama",
+      "text": "HEAT",
+      "colour": "#1fc01f",
+      "display": true,
+      "startStyle": "straight",
+      "endStyle": "straight",
+      "start": 82,
+      "end": 118
+    },
+    {
+      "type": "pfama",
+      "text": "HEAT",
+      "colour": "#1fc01f",
+      "display": true,
+      "startStyle": "straight",
+      "endStyle": "straight",
+      "start": 120,
+      "end": 155
+    },
+    {
+      "type": "pfama",
+      "text": "HEAT",
+      "colour": "#1fc01f",
+      "display": true,
+      "startStyle": "straight",
+      "endStyle": "straight",
+      "start": 159,
+      "end": 195
+    }
+  ]
+}

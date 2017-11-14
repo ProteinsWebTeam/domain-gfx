@@ -1,5 +1,5 @@
 /* global global: false */
-const uniqueId = require('utils/uniqueId').default;
+import uniqueId from '../src/utils/uniqueId';
 
 describe('uniqueId', () => {
   it('should generate unique ids', () => {
@@ -14,8 +14,8 @@ describe('uniqueId', () => {
 
 describe('namespace', () => {
   const testNamespace = () => {
-    const import1 = require('utils/namespace').default;
-    const import2 = require('utils/namespace').default;
+    const import1 = require('../src/utils/namespace').default;
+    const import2 = require('../src/utils/namespace').default;
     expect(import1).toBe(import2);
   };
 

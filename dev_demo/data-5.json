@@ -1,0 +1,47 @@
+{
+  "length": 200,
+  "motifs": [
+    {
+      "type": "sig_p",
+      "colour": "#ff9c00",
+      "display": true,
+      "start": 1,
+      "end": 27
+    },
+    {
+      "type": "low_complexity",
+      "colour": "#0FF",
+      "display": true,
+      "start": 39,
+      "end": 47
+    },
+    {
+      "type": "low_complexity",
+      "colour": "#0FF",
+      "display": true,
+      "start": 67,
+      "end": 76
+    },
+    {
+      "type": "coiled_coil",
+      "colour": "#9cff00",
+      "display": true,
+      "start": 103,
+      "end": 123
+    },
+    {
+      "type": "transmembrane",
+      "colour": "#F00",
+      "display": true,
+      "start": 155,
+      "end": 175
+    },
+    {
+      "type": "transmembrane",
+      "colour": "#F00",
+      "display": true,
+      "start": 180,
+      "end": 195
+    }
+  ]
+}

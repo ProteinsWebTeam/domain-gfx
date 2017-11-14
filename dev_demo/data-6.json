@@ -1,0 +1,157 @@
+{
+  "length": 400,
+  "regions": [
+    {
+      "colour": "#1fc01f",
+      "endStyle": "curved",
+      "startStyle": "curved",
+      "display": true,
+      "end": 104,
+      "href": "/family/Inhibitor_I29",
+      "text": "Inhibitor_I29",
+      "metadata": {
+        "scoreName": "e-value",
+        "score": "1.3e-38",
+        "description": "Inhibitor_I29",
+        "accession": "PF08246",
+        "end": 104,
+        "database": "pfam",
+        "identifier": "Inhibitor_I29",
+        "type": "Domain",
+        "start": 48
+      },
+      "type": "pfama",
+      "start": 48
+    },
+    {
+      "colour": "#c00f0f",
+      "endStyle": "curved",
+      "startStyle": "curved",
+      "display": true,
+      "end": 343,
+      "href": "/family/Peptidase_C1",
+      "text": "Peptidase_C1",
+      "modelLength": 307,
+      "metadata": {
+        "scoreName": "e-value",
+        "score": "1.3e-38",
+        "description": "Peptidase_C1",
+        "accession": "PF00112",
+        "end": 343,
+        "database": "pfam",
+        "identifier": "Peptidase_C1",
+        "type": "Domain",
+        "start": 134
+      },
+      "type": "pfama",
+      "start": 134
+    }
+  ],
+  "markups": [
+    {
+      "lineColour": "#CCC",
+      "colour": "#CCC",
+      "display": true,
+      "end": 196,
+      "v_align": "top",
+      "metadata": {
+        "database": "pfam",
+        "type": "Disulphide, 155-196",
+        "end": 196,
+        "start": 155
+      },
+      "type": "Disulphide",
+      "start": 155
+    },
+    {
+      "lineColour": "#CCC",
+      "colour": "#CCC",
+      "display": true,
+      "end": 228,
+      "v_align": "top",
+      "metadata": {
+        "database": "pfam",
+        "type": "Disulphide, 189-228",
+        "end": 228,
+        "start": 189
+      },
+      "type": "Disulphide",
+      "start": 189
+    },
+    {
+      "lineColour": "#CCC",
+      "colour": "#CCC",
+      "display": true,
+      "end": 333,
+      "v_align": "top",
+      "metadata": {
+        "database": "pfam",
+        "type": "Disulphide, 286-333",
+        "end": 333,
+        "start": 286
+      },
+      "type": "Disulphide",
+      "start": 286
+    },
+    {
+      "lineColour": "#000",
+      "colour": "#F36",
+      "display": true,
+      "residue": "C",
+      "headStyle": "diamond",
+      "v_align": "bottom",
+      "type": "Active site",
+      "metadata": {
+        "database": "pfam",
+        "description": "Active site, C158",
+        "start": 158
+      },
+      "start": 158
+    },
+    {
+      "lineColour": "#000",
+      "colour": "#90C",
+      "display": true,
+      "residue": "H",
+      "headStyle": "diamond",
+      "v_align": "bottom",
+      "type": "Pfam predicted active site, H292",
+      "metadata": {
+        "database": "pfam",
+        "description": "Pfam predicted active site, H292",
+        "start": 292
+      },
+      "start": 292
+    },
+    {
+      "lineColour": "#000",
+      "colour": "#F6F",
+      "display": true,
+      "residue": "N",
+      "headStyle": "diamond",
+      "v_align": "bottom",
+      "type": "Pfam predicted active site, N308",
+      "metadata": {
+        "database": "pfam",
+        "description": "Pfam predicted active site, N308",
+        "start": 308
+      },
+      "start": 308
+    }
+  ],
+  "motifs": [
+    {
+      "colour": "#ff9c00",
+      "metadata": {
+        "database": "seq",
+        "type": "Signal peptide",
+        "end": 26,
+        "start": 1
+      },
+      "type": "sig_p",
+      "display": true,
+      "end": 26,
+      "start": 1
+    }
+  ]
+}

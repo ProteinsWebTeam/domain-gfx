@@ -1,0 +1,35 @@
+{
+  "length": 400,
+  "regions": [
+    {
+      "type": "pfama",
+      "text": "PartN",
+      "colour": "#9999ff",
+      "display": true,
+      "startStyle": "jagged",
+      "endStyle": "curved",
+      "start": 10,
+      "end": 110
+    },
+    {
+      "type": "pfama",
+      "text": "PartN_C",
+      "colour": "#399",
+      "display": true,
+      "startStyle": "jagged",
+      "endStyle": "jagged",
+      "start": 115,
+      "end": 204
+    },
+    {
+      "type": "pfama",
+      "text": "PartC",
+      "colour": "#1fc01f",
+      "display": true,
+      "startStyle": "curved",
+      "endStyle": "jagged",
+      "start": 210,
+      "end": 350
+    }
+  ]
+}

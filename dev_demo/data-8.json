@@ -1,0 +1,334 @@
+{
+  "length": 950,
+  "regions": [
+    {
+      "modelStart": 5,
+      "modelEnd": 292,
+      "colour": "#2dcf00",
+      "endStyle": "jagged",
+      "startStyle": "jagged",
+      "display": true,
+      "end": 361,
+      "aliEnd": 361,
+      "href": "/family/PF00082",
+      "text": "Peptidase_S8",
+      "modelLength": 307,
+      "metadata": {
+        "scoreName": "e-value",
+        "score": "1.3e-38",
+        "description": "Subtilase family",
+        "accession": "PF00082",
+        "end": 587,
+        "database": "pfam",
+        "aliEnd": 573,
+        "identifier": "Peptidase_S8",
+        "type": "Domain",
+        "aliStart": 163,
+        "start": 159
+      },
+      "type": "pfama",
+      "aliStart": 163,
+      "start": 159
+    },
+    {
+      "modelStart": 5,
+      "modelEnd": 292,
+      "colour": "#2dcf00",
+      "endStyle": "jagged",
+      "startStyle": "jagged",
+      "display": true,
+      "end": 587,
+      "aliEnd": 573,
+      "href": "/family/PF00082",
+      "text": "Peptidase_S8",
+      "modelLength": 307,
+      "metadata": {
+        "scoreName": "e-value",
+        "score": "1.3e-38",
+        "description": "Subtilase family",
+        "accession": "PF00082",
+        "end": 587,
+        "database": "pfam",
+        "aliEnd": 573,
+        "identifier": "Peptidase_S8",
+        "type": "Domain",
+        "aliStart": 163,
+        "start": 159
+      },
+      "type": "pfama",
+      "aliStart": 470,
+      "start": 470
+    },
+    {
+      "modelStart": 12,
+      "modelEnd": 100,
+      "colour": "#ff5353",
+      "endStyle": "curved",
+      "startStyle": "jagged",
+      "display": true,
+      "end": 469,
+      "aliEnd": 469,
+      "href": "/family/PF02225",
+      "text": "PA",
+      "modelLength": 100,
+      "metadata": {
+        "scoreName": "e-value",
+        "score": "7.1e-09",
+        "description": "PA domain",
+        "accession": "PF02225",
+        "end": 469,
+        "database": "pfam",
+        "aliEnd": 469,
+        "identifier": "PA",
+        "type": "Family",
+        "aliStart": 385,
+        "start": 362
+      },
+      "type": "pfama",
+      "aliStart": 385,
+      "start": 362
+    },
+    {
+      "modelStart": 1,
+      "modelEnd": 112,
+      "colour": "#5b5bff",
+      "endStyle": "curved",
+      "startStyle": "curved",
+      "display": true,
+      "end": 726,
+      "aliEnd": 726,
+      "href": "/family/PF06280",
+      "text": "DUF1034",
+      "modelLength": 112,
+      "metadata": {
+        "scoreName": "e-value",
+        "score": "1.1e-13",
+        "description": "Fn3-like domain (DUF1034)",
+        "accession": "PF06280",
+        "end": 726,
+        "database": "pfam",
+        "aliEnd": 726,
+        "identifier": "DUF1034",
+        "type": "Domain",
+        "aliStart": 613,
+        "start": 613
+      },
+      "type": "pfama",
+      "aliStart": 613,
+      "start": 613
+    }
+  ],
+  "markups": [
+    {
+      "lineColour": "#ff0000",
+      "colour": "#000000",
+      "display": true,
+      "end": 470,
+      "v_align": "top",
+      "metadata": {
+        "database": "pfam",
+        "type": "Link between discontinous regions",
+        "end": 470,
+        "start": 361
+      },
+      "type": "Nested",
+      "start": 361
+    },
+    {
+      "lineColour": "#333333",
+      "colour": "#e469fe",
+      "display": true,
+      "residue": "S",
+      "headStyle": "diamond",
+      "v_align": "top",
+      "type": "Pfam predicted active site",
+      "metadata": {
+        "database": "pfam",
+        "description": "S Pfam predicted active site",
+        "start": 538
+      },
+      "start": 538
+    },
+    {
+      "lineColour": "#333333",
+      "colour": "#e469fe",
+      "display": true,
+      "residue": "D",
+      "headStyle": "diamond",
+      "v_align": "top",
+      "type": "Pfam predicted active site",
+      "metadata": {
+        "database": "pfam",
+        "description": "D Pfam predicted active site",
+        "start": 185
+      },
+      "start": 185
+    },
+    {
+      "lineColour": "#333333",
+      "colour": "#e469fe",
+      "display": true,
+      "residue": "H",
+      "headStyle": "diamond",
+      "v_align": "top",
+      "type": "Pfam predicted active site",
+      "metadata": {
+        "database": "pfam",
+        "description": "H Pfam predicted active site",
+        "start": 235
+      },
+      "start": 235
+    }
+  ],
+  "metadata": {
+    "database": "uniprot",
+    "identifier": "Q560V8_CRYNE",
+    "organism": "Cryptococcus neoformans (Filobasidiella neoformans)",
+    "description": "Putative uncharacterized protein",
+    "taxid": 5207,
+    "accession": "Q560V8"
+  },
+  "motifs": [
+    {
+      "colour": "#ffa500",
+      "metadata": {
+        "database": "Phobius",
+        "type": "sig_p",
+        "end": 23,
+        "start": 1
+      },
+      "type": "sig_p",
+      "display": true,
+      "end": 23,
+      "start": 1
+    },
+    {
+      "colour": "#00ffff",
+      "metadata": {
+        "database": "seg",
+        "type": "low_complexity",
+        "score": "2.5100",
+        "end": 21,
+        "start": 3
+      },
+      "type": "low_complexity",
+      "display": false,
+      "end": 21,
+      "start": 3
+    },
+    {
+      "colour": "#86bcff",
+      "metadata": {
+        "database": "seg",
+        "type": "low_complexity",
+        "score": "1.4900",
+        "end": 156,
+        "start": 134
+      },
+      "type": "low_complexity",
+      "display": true,
+      "end": 156,
+      "start": 134
+    },
+    {
+      "colour": "#00ffff",
+      "metadata": {
+        "database": "seg",
+        "type": "low_complexity",
+        "score": "2.0200",
+        "end": 187,
+        "start": 173
+      },
+      "type": "low_complexity",
+      "display": false,
+      "end": 187,
+      "start": 173
+    },
+    {
+      "colour": "#00ffff",
+      "metadata": {
+        "database": "seg",
+        "type": "low_complexity",
+        "score": "2.0800",
+        "end": 218,
+        "start": 207
+      },
+      "type": "low_complexity",
+      "display": false,
+      "end": 218,
+      "start": 207
+    },
+    {
+      "colour": "#00ffff",
+      "metadata": {
+        "database": "seg",
+        "type": "low_complexity",
+        "score": "2.1300",
+        "end": 231,
+        "start": 220
+      },
+      "type": "low_complexity",
+      "display": false,
+      "end": 231,
+      "start": 220
+    },
+    {
+      "colour": "#00ffff",
+      "metadata": {
+        "database": "seg",
+        "type": "low_complexity",
+        "score": "2.0000",
+        "end": 554,
+        "start": 538
+      },
+      "type": "low_complexity",
+      "display": false,
+      "end": 554,
+      "start": 538
+    },
+    {
+      "colour": "#86bcff",
+      "metadata": {
+        "database": "seg",
+        "type": "low_complexity",
+        "score": "1.9100",
+        "end": 590,
+        "start": 578
+      },
+      "type": "low_complexity",
+      "display": true,
+      "end": 590,
+      "start": 588
+    },
+    {
+      "colour": "#00ffff",
+      "metadata": {
+        "database": "seg",
+        "type": "low_complexity",
+        "score": "1.7600",
+        "end": 831,
+        "start": 822
+      },
+      "type": "low_complexity",
+      "display": false,
+      "end": 831,
+      "start": 822
+    },
+    {
+      "colour": ["#ff7ff0", "#f2ff7f", "#7ff2ff"],
+      "href": "/pfamb/PB075017",
+      "type": "pfamb",
+      "metadata": {
+        "database": "pfam",
+        "identifier": "Pfam-B_75017",
+        "type": "Pfam-B",
+        "start": 791,
+        "end": 949,
+        "accession": "PB075017"
+      },
+      "start": 791,
+      "end": 949,
+      "display": true
+    }
+  ]
+}

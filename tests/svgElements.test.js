@@ -1,8 +1,7 @@
-const svgElements = require('renderer/svg/svg');
-const svg = svgElements.default;
+import svgRenderer from '../src/renderer/svg/svg';
 
 describe('SVG HOC', () => {
-  const rectCreator = svg('rect');
+  const rectCreator = svgRenderer('rect');
   it('should return an other function', () => {
     expect(typeof rectCreator).toBe('function');
   });

@@ -1,0 +1,45 @@
+{
+  "length": 200,
+  "regions": [
+    {
+      "type": "pfama",
+      "text": "IMPDH",
+      "colour": "#1fc01f",
+      "display": true,
+      "startStyle": "curved",
+      "endStyle": "jagged",
+      "start": 5,
+      "end": 80
+    },
+    {
+      "type": "pfama",
+      "text": "CBS",
+      "colour": "#c00f0f",
+      "display": true,
+      "startStyle": "curved",
+      "endStyle": "curved",
+      "start": 81,
+      "end": 135
+    },
+    {
+      "type": "pfama",
+      "text": "IMPDH",
+      "colour": "#1fc01f",
+      "display": true,
+      "startStyle": "jagged",
+      "endStyle": "curved",
+      "start": 136,
+      "end": 197
+    }
+  ],
+  "markups": [
+    {
+      "type": "Nested",
+      "colour": "#000000",
+      "display": true,
+      "v_align": "top",
+      "start": 76,
+      "end": 136
+    }
+  ]
+}

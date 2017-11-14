@@ -30,9 +30,9 @@
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.6.1",
-    "babel-preset-minify": "0.2.0",
     "babel-preset-stage-2": "6.24.1",
     "codemirror": "5.31.0",
+    "css-loader": "0.28.7",
     "eslint": "4.11.0",
     "eslint-config-prettier": "2.7.0",
     "eslint-config-standard": "10.2.1",
@@ -45,6 +45,7 @@
     "husky": "0.14.3",
     "jest": "21.2.1",
     "jsdom": "11.3.0",
+    "json-loader": "0.5.7",
     "lint-staged": "5.0.0",
     "lodash.debounce": "4.0.8",
     "npm-run-all": "4.1.2",
@@ -56,7 +57,7 @@
   "lint-staged": {
     "linters": {
       "*.js": [
-        "eslint --fix --ignore-path .gitignore",
+        "eslint --fix --ignore-path .gitignore --ignore-pattern demo",
         "prettier --single-quote --trailing-comma es5 --write",
         "git add"
       ]
@@ -67,9 +68,6 @@
       "test": {
         "plugins": [
           "transform-es2015-modules-commonjs"
-        ],
-        "presets": [
-          "stage-2"
         ]
       }
     },
@@ -87,13 +85,13 @@
     "precommit": "lint-staged",
     "prebuild": "npm run test",
     "build": "webpack --env.production",
-    "build:demo": "webpack --env.demo",
+    "build:demo": "webpack --env.production --env.demo",
     "start": "webpack-dev-server",
     "test": "npm-run-all -p --aggregate-output test:lint && npm run test:flow && npm run test:jest",
     "test:lint": "eslint --color --ignore-path .gitignore \"./**/*.js\" --ignore-pattern demo",
     "test:flow": "flow check",
-    "test:jest": "NODE_PATH=$NODE_PATH:./src node $(npm bin)/jest",
-    "publish:demo": "git subtree push --prefix demo origin gh-pages",
+    "test:jest": "jest --notify",
+    "publish:demo": "npm run build:demo && git subtree push --prefix demo origin gh-pages",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
