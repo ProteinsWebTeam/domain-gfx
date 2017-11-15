@@ -1,4 +1,5 @@
 /* eslint no-new: off */
+import '../src/polyfills';
 import DomainGfx from '../src/index';
 
 import data1 from './data-1.json';

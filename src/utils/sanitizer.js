@@ -22,7 +22,8 @@ const falseString = /^f(alse)?$/i;
 
 const sanitizer = (data /*: Object */) => {
   const output = {};
-  for (const [rawKey, rawValue] of Object.entries(data)) {
+  for (const rawKey of Object.keys(data)) {
+    const rawValue = data[rawKey];
     let [key, value] = [rawKey, rawValue];
     // process numbers
     if (keyNumbers.has(key)) {

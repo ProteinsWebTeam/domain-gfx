@@ -1,8 +1,8 @@
 {
   "name": "domain-gfx",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Domain graphics drawing library",
-  "main": "dist/domain_gfx.es5.js",
+  "main": "dist/domain-gfx.js",
   "jsnext": "src/index.js",
   "module": "src/index.js",
   "author": "Aurélien Luciani <luciani@ebi.ac.uk> (https://github.com/aurel-l)",
@@ -19,6 +19,7 @@
     "src"
   ],
   "dependencies": {
+    "core-js": "2.5.1",
     "lodash-es": "4.17.4"
   },
   "devDependencies": {
@@ -26,13 +27,11 @@
     "babel-eslint": "8.0.2",
     "babel-jest": "21.2.0",
     "babel-loader": "7.1.2",
-    "babel-plugin-external-helpers": "6.22.0",
+    "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
-    "babel-polyfill": "6.26.0",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-preset-env": "1.6.1",
-    "babel-preset-stage-2": "6.24.1",
     "codemirror": "5.31.0",
-    "css-loader": "0.28.7",
     "eslint": "4.11.0",
     "eslint-config-prettier": "2.7.0",
     "eslint-config-standard": "10.2.1",
@@ -60,6 +59,10 @@
         "eslint --fix --ignore-path .gitignore --ignore-pattern demo",
         "prettier --single-quote --trailing-comma es5 --write",
         "git add"
+      ],
+      "*.md": [
+        "prettier --write",
+        "git add"
       ]
     }
   },
@@ -71,8 +74,9 @@
         ]
       }
     },
-    "presets": [
-      "stage-2"
+    "plugins": [
+      "transform-class-properties",
+      "transform-object-rest-spread"
     ]
   },
   "jest": {
@@ -91,7 +95,7 @@
     "test:lint": "eslint --color --ignore-path .gitignore \"./**/*.js\" --ignore-pattern demo",
     "test:flow": "flow check",
     "test:jest": "jest --notify",
-    "publish:demo": "npm run build:demo && git subtree push --prefix demo origin gh-pages",
+    "publish:demo": "npm run build:demo && git push origin `git subtree split --prefix demo master`:gh-pages --force",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

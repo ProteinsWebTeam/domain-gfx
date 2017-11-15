@@ -9,27 +9,27 @@ const className = 'domain_gfx__tooltip';
 const getEntityBBox = target => {
   if (!target) throw new Error('No entity found in the whole tree');
   if (!dataset(target).get('entity')) {
-    return getEntityBBox(target.parentElement);
+    return getEntityBBox(target.parentNode);
   }
   return target.getBoundingClientRect();
 };
 
 const findBestTooltipPosition = (
-  entityBBox/*: Object */,
-  tooltipBBox/*: Object */
+  entityBBox /*: Object */,
+  tooltipBBox /*: Object */
 ) => {
-  let x = entityBBox.left + (entityBBox.width / 2) - (tooltipBBox.width / 2);
+  let x = entityBBox.left + entityBBox.width / 2 - tooltipBBox.width / 2;
   if (x < 0) {
-    x = 0;// prevent left overflow
+    x = 0; // prevent left overflow
   } else {
-    x = Math.min(x, window.innerWidth - tooltipBBox.width);// right overflow
+    x = Math.min(x, window.innerWidth - tooltipBBox.width); // right overflow
   }
   const y = entityBBox.top - tooltipBBox.height;
   // Rounding, otherwise will be blurred if not pixel aligned
-  return {x: Math.round(x), y: Math.round(y)};
+  return { x: Math.round(x), y: Math.round(y) };
 };
 
-const buildTooltipContent = (html/*: string */) => {
+const buildTooltipContent = (html /*: string */) => {
   const el = document.createElement('div');
   el.classList.add(`${className}___container`);
   el.innerHTML = html;
@@ -43,7 +43,7 @@ class TooltipManager {
     _promoted: boolean;
     _currentData: ?Object;
   */
-  constructor () {
+  constructor() {
     // If no DOM, no need to do anything
     if (!window) return;
     // container
@@ -66,19 +66,21 @@ class TooltipManager {
     this._promoted = false;
     // CSS
     if (!document.head) throw new Error('No head in document');
-    document.head.appendChild(getStyleSheet({className, acceptedMargin}));
+    document.head.appendChild(getStyleSheet({ className, acceptedMargin }));
     // add event listener to the tooltip itself
     cont.addEventListener('mouseleave', e => {
       const relatedData = e.relatedTarget[ns];
-      if (relatedData === this._currentData) return;// enter part of same entity
+      if (relatedData === this._currentData) return; // enter part of same entity
       this._currentData = relatedData || null;
       if (relatedData) {
         // switch tooltip content
         this._replaceTooltipContent(relatedData);
-        this._display(findBestTooltipPosition(
-          getEntityBBox(e.relatedTarget),
-          this._container.getBoundingClientRect()
-        ));
+        this._display(
+          findBestTooltipPosition(
+            getEntityBBox(e.relatedTarget),
+            this._container.getBoundingClientRect()
+          )
+        );
       } else {
         // hide tooltip
         this._hide();
@@ -87,14 +89,14 @@ class TooltipManager {
   }
 
   // promote to own graphic accelerated layer
-  _promoteTarget = canvas => ({target}/*: {target: Element}*/) => {
+  _promoteTarget = canvas => ({ target } /*: {target: Element}*/) => {
     if (target !== canvas || this._promoted) return;
     this._container.style.willChange = 'transform';
   };
 
   // demote from own graphic accelerated layer
   _demoteTarget = canvas => (
-    {target, relatedTarget}/*: {target: Element, relatedTarget: Element}*/
+    { target, relatedTarget } /*: {target: Element, relatedTarget: Element}*/
   ) => {
     if (target !== canvas || !this._promoted) return;
     if (relatedTarget && relatedTarget === this._container) return;
@@ -114,51 +116,54 @@ class TooltipManager {
     this._visible = false;
   };
 
-  _display = ({x, y}) => {
-    this._container.style.transform = (
-      `translate(${x}px, ${y + acceptedMargin}px)`
-    );
+  _display = ({ x, y }) => {
+    this._container.style.transform = `translate(${x}px, ${y +
+      acceptedMargin}px)`;
     this._container.classList.remove('hidden');
   };
 
-  _handleMouseOver = (e/*: MouseEvent */) => {
+  _handleMouseOver = (e /*: MouseEvent */) => {
     const data = e.target[ns];
     if (this._currentData === data || !(this._currentData || data)) return;
     this._currentData = data;
     this._replaceTooltipContent(data);
-    this._display(findBestTooltipPosition(
-      getEntityBBox(e.target),
-      this._container.getBoundingClientRect()
-    ));
+    this._display(
+      findBestTooltipPosition(
+        getEntityBBox(e.target),
+        this._container.getBoundingClientRect()
+      )
+    );
   };
 
-  _handleMouseOut = (e/*: MouseEvent */) => {
+  _handleMouseOut = (e /*: MouseEvent */) => {
     const data = e.target[ns];
     if (!data) return;
     if (e.relatedTarget === this._container) return;
     const relatedData = e.relatedTarget[ns];
-    if (relatedData === this._currentData) return;// enter part of same entity
+    if (relatedData === this._currentData) return; // enter part of same entity
     this._currentData = relatedData || null;
     if (relatedData) {
       // switch tooltip content
       this._replaceTooltipContent(relatedData);
-      this._display(findBestTooltipPosition(
-        getEntityBBox(e.relatedTarget),
-        this._container.getBoundingClientRect()
-      ));
+      this._display(
+        findBestTooltipPosition(
+          getEntityBBox(e.relatedTarget),
+          this._container.getBoundingClientRect()
+        )
+      );
     } else {
       // hide tooltip
       this._hide();
     }
   };
 
-  attachToCanvas (canvas/*: Element */) {
+  attachToCanvas(canvas /*: Element */) {
     const promote = this._promoteTarget(canvas);
     const demote = this._demoteTarget(canvas);
     canvas.addEventListener('mouseenter', promote);
     canvas.addEventListener('mouseleave', demote);
     canvas.addEventListener('mouseover', this._handleMouseOver);
-    canvas.addEventListener('mousemove', this._handleMouseOver);// not a typo
+    canvas.addEventListener('mousemove', this._handleMouseOver); // not a typo
     canvas.addEventListener('mouseout', this._handleMouseOut);
     return () => {
       canvas.removeEventListener('mouseenter', promote);

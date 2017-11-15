@@ -1,6 +1,12 @@
 import {
-  svg, group, defs,
-  filter, feGaussianBlur, feSpecularLighting, fePointLight, feComposite
+  svg,
+  group,
+  defs,
+  filter,
+  feGaussianBlur,
+  feSpecularLighting,
+  fePointLight,
+  feComposite,
 } from './svg';
 import markup from './entities/markup';
 import sequence from './entities/sequence';
@@ -19,37 +25,48 @@ const connectData = (entity, data, always = false) => {
 };
 
 export default class SvgRenderer {
-  constructor ({width, height, spotlight = true}) {
+  constructor({ width, height, spotlight = true }) {
     this._spotlight = spotlight && uniqueId();
     this._defs = defs(
       null,
-      this._spotlight && filter(
-        {
-          id: this._spotlight, filterUnits: 'objectBoundingBox',
-          x: -0.1, y: -0.1, width: 5, height: 5
-        },
-        feGaussianBlur(
-          {in: 'SourceAlpha', stdDeviation: 1, result: 'alpha_blur'}
-        ),
-        feSpecularLighting(
+      this._spotlight &&
+        filter(
           {
-            in: 'alpha_blur', surfaceScale: 5, specularConstant: 1.5,
-            specularExponent: 12, 'lighting-color': '#ddd', result: 'light'
+            id: this._spotlight,
+            filterUnits: 'objectBoundingBox',
+            x: -0.1,
+            y: -0.1,
+            width: 5,
+            height: 5,
           },
-          fePointLight({x: -100, y: -200, z: 100})
-        ),
-        feComposite({in: 'SourceGraphic', in2: 'light', operator: 'out'})
-      )
+          feGaussianBlur({
+            in: 'SourceAlpha',
+            stdDeviation: 1,
+            result: 'alpha_blur',
+          }),
+          feSpecularLighting(
+            {
+              in: 'alpha_blur',
+              surfaceScale: 5,
+              specularConstant: 1.5,
+              specularExponent: 12,
+              'lighting-color': '#ddd',
+              result: 'light',
+            },
+            fePointLight({ x: -100, y: -200, z: 100 })
+          ),
+          feComposite({ in: 'SourceGraphic', in2: 'light', operator: 'out' })
+        )
     );
     this._canvas = svg(
-      {width, height, viewBox: `0 0 ${width} ${height}`},
+      { width, height, viewBox: `0 0 ${width} ${height}` },
       this._defs
     );
     this._canvas.style.width = `${width * 2}px`;
     this._canvas.style.height = `${height * 2}px`;
   }
 
-  get canvas () {
+  get canvas() {
     return this._canvas;
   }
 
@@ -67,7 +84,7 @@ export default class SvgRenderer {
       m.level = level || 0;
     }
     const g = group(
-      {transform: `translate(${m.start * residueWidth}, 10)`},
+      { transform: `translate(${m.start * residueWidth}, 10)` },
       markup(m, residueWidth)
     );
     dataset(g).set('entity', 'markup');
@@ -77,9 +94,9 @@ export default class SvgRenderer {
 
   drawSequence = length => {
     const g = group(
-      {transform: 'translate(0 10)'},
+      { transform: 'translate(0 10)' },
       sequence({
-        position: {x: 0, y: -2.5},
+        position: { x: 0, y: -2.5 },
         length,
         height: 5,
         color: '#d8d8d8',
@@ -91,9 +108,9 @@ export default class SvgRenderer {
 
   drawHit = (h, residueWidth) => {
     const g = group(
-      {transform: `translate(${h.tstart * residueWidth}, 16)`},
+      { transform: `translate(${h.tstart * residueWidth}, 16)` },
       hit({
-        position: {x: 0, y: 0},
+        position: { x: 0, y: 0 },
         length: (h.tend - h.tstart) * residueWidth,
         height: 2,
         color: h.color,
@@ -106,7 +123,7 @@ export default class SvgRenderer {
 
   drawRegion = (region, residueWidth) => {
     const g = group(
-      {transform: `translate(${region.start * residueWidth}, 5)`},
+      { transform: `translate(${region.start * residueWidth}, 5)` },
       domain(region, residueWidth, this._spotlight, this._addToDefs)
     );
     dataset(g).set('entity', 'region');
@@ -114,7 +131,9 @@ export default class SvgRenderer {
     this._canvas.appendChild(g);
     const textToFit = g.querySelector('[data-maxwidth]');
     if (!textToFit) return;
-    if (textToFit.getBBox().width <= +(dataset(textToFit).get('maxwidth') - 0)) {
+    if (
+      textToFit.getBBox().width <= +(dataset(textToFit).get('maxwidth') - 0)
+    ) {
       textToFit.setAttribute('opacity', 1);
     } else {
       textToFit.parentElement && textToFit.parentElement.removeChild(textToFit);
@@ -123,16 +142,19 @@ export default class SvgRenderer {
 
   drawMotif = (m, residueWidth) => {
     const g = group(
-      {transform: `translate(${m.start * residueWidth}, 6)`},
-      motif({
-        position: {x: 0, y: 0},
-        length: (m.end - m.start) * residueWidth,
-        height: 8,
-        color: m.color,
-        gradient: m.gradient,
-      }, this._addToDefs)
+      { transform: `translate(${m.start * residueWidth}, 6)` },
+      motif(
+        {
+          position: { x: 0, y: 0 },
+          length: (m.end - m.start) * residueWidth,
+          height: 8,
+          color: m.color,
+          gradient: m.gradient,
+        },
+        this._addToDefs
+      )
     );
-    g.dataset.entity = 'motif';
+    dataset(g).set('entity', 'motif');
     connectData(g, m);
     this._canvas.appendChild(g);
   };
