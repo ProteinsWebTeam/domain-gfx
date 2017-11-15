@@ -176,6 +176,8 @@ Should be used:
 
 ## Todo:
 
-* [ ] Add more documentation _ [ ] shape of `data` _ [ ] details for developers
+* [ ] Add more documentation
+  * [ ] shape of `data`
+  * [ ] details for developers
 * [ ] Add more unit tests
 * [ ] Handle parameters (entity/text sizes, x/y scale, etc)
