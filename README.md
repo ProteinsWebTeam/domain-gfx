@@ -178,5 +178,4 @@ Should be used:
 
 * [ ] Add more documentation _ [ ] shape of `data` _ [ ] details for developers
 * [ ] Add more unit tests
-* [ ] Add TravisCI integration
 * [ ] Handle parameters (entity/text sizes, x/y scale, etc)
