@@ -1,0 +1,30 @@
+name: Test and Publish Nightingale App
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - name: 🔧 - Install
+        run: |
+          npm ci
+      - name: 🧪 - Test 
+        run: |
+          npm test
+      - name: 🏗 - Build  
+        run: |
+          npm run build
+      - name: 🏗 - Build Demo
+        run: |
+          npm run build:demo
+      - name: Deploy Site 🚀
+        # if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: demo # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
