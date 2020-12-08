@@ -1,46 +1,49 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>domain_gfx demo page</title>
-  <link rel="stylesheet" href="codemirror.css">
-  <style>
-    html {
-      box-sizing: border-box;
-      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    }
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
-    .hidden {
-      display: none;
-    }
-    .invalid {
-      background: red;
-    }
-    .domain_gfx__tooltip {
-      z-index: 2;
-    }
-  </style>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <title>domain_gfx demo page</title>
+    <link rel="stylesheet" href="codemirror.css" />
+    <style>
+      html {
+        box-sizing: border-box;
+        font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+      .hidden {
+        display: none;
+      }
+      .invalid {
+        background: red;
+      }
+      .domain_gfx__tooltip {
+        z-index: 2;
+      }
+    </style>
+  </head>
 
-<body>
-  <h1>Playground demo for the <code>domain_gfx</code> library</h1>
-  <main>
-    <section class="data">
-      <h2>Code playground</h2>
-      <textarea></textarea>
-      <div class="invalid hidden">Invalid JSON entered</div>
-    </section>
-    <section class="visu">
-      <h2>Corresponding visualisation</h2>
-    </section>
-  </main>
-  <footer>
-    <div>
-      You can open your devtools to explore the code of this page.
-      The code is not minified and also includes sourcemaps for easy debugging
-    </div>
-  </footer>
-<script type="text/javascript" src="domain-gfx.legacy.js"></script></body>
+  <body>
+    <h1>Playground demo for the <code>domain_gfx</code> library</h1>
+    <main>
+      <section class="data">
+        <h2>Code Playground</h2>
+        <textarea></textarea>
+        <div class="invalid hidden">Invalid JSON entered</div>
+      </section>
+      <section class="visu">
+        <h2>Corresponding visualisation</h2>
+      </section>
+    </main>
+    <footer>
+      <div>
+        You can open your devtools to explore the code of this page. The code is
+        not minified and also includes sourcemaps for easy debugging
+      </div>
+    </footer>
+    <script type="text/javascript" src="domain-gfx.legacy.js"></script>
+  </body>
 </html>
