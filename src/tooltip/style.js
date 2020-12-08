@@ -1,8 +1,8 @@
 // @flow
-export default (
-  {className, acceptedMargin}
-  /*: {className: string, acceptedMargin: number} */
-) => {
+export default ({
+  className,
+  acceptedMargin,
+}) /*: {className: string, acceptedMargin: number} */ => {
   const stylesheet = document.createElement('style');
   stylesheet.textContent = `
 .${className} {

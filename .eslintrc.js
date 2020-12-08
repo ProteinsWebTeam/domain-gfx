@@ -24,4 +24,5 @@ module.exports = {
     'spaced-comment': ['warn', 'always', { markers: [':', '::'] }],
     'no-debugger': [PROD ? 'on' : 'off'],
   },
+  ignorePatterns: ['.eslintrc.js'],
 };
