@@ -5,10 +5,10 @@ import SvgRenderer from './renderer/svg';
 import getDefaults from './defaults';
 import sanitize from './utils/sanitizer';
 
-const isHidden = ({hidden, display = true}) => hidden || !display;
+const isHidden = ({ hidden, display = true }) => hidden || !display;
 
 export default class DomainGFX {
-  constructor ({data = {}, parent, params = {}} = {}) {
+  constructor({ data = {}, parent, params = {} } = {}) {
     this._data = sanitize(data);
     this._parent = parent;
     this._params = merge({}, getDefaults(), params);
@@ -17,18 +17,19 @@ export default class DomainGFX {
     this._draw();
   }
 
-  _computeWidth ({length = 0}, {image: {width, sequenceEndPadding}}) {
+  _computeWidth({ length = 0 }, { image: { width, sequenceEndPadding } }) {
     return length * width.residue + sequenceEndPadding;
   }
 
-  _computeHeight () {
+  _computeHeight() {
     return 20;
   }
 
   _draw = () => {
     // draw markups
-    const markups = (this._data.markups || [])
-      .sort((a, b) => a.start - b.start);
+    const markups = (this._data.markups || []).sort(
+      (a, b) => a.start - b.start
+    );
     const nestedMarkups = [];
     let needsTooltips = false;
     for (const markup of markups) {
@@ -65,9 +66,7 @@ export default class DomainGFX {
     }
     // connect tooltip logic
     if (needsTooltips) {
-      this._detach = (
-        getTooltipManager().attachToCanvas(this._renderer.canvas)
-      );
+      this._detach = getTooltipManager().attachToCanvas(this._renderer.canvas);
     }
   };
 
@@ -79,16 +78,17 @@ export default class DomainGFX {
     return this._renderer.canvas;
   };
 
-  get data () {
+  get data() {
     return this._data;
   }
 
-  set data (value) {
+  set data(value) {
     this._data = sanitize(value);
     const prevCanvas = this._canvas;
     this._canvas = this._createCanvas();
     this._parent.replaceChild(this._canvas, prevCanvas);
     this._draw();
+    // eslint-disable-next-line no-setter-return
     return this._data;
   }
 
@@ -102,13 +102,15 @@ export default class DomainGFX {
     this._parent.removeChild(this._canvas);
     // remove references to DOM
     this._canvas = this._parent = null;
-  }
+  };
 }
 
 try {
   // Dispatches event on document when library has loaded
   // This way user can wait for async load, and when event fires, call the lib
-  document.dispatchEvent(new CustomEvent('domainGfxReady', {detail: DomainGFX}));
+  document.dispatchEvent(
+    new CustomEvent('domainGfxReady', { detail: DomainGFX })
+  );
 } catch (_) {
   // unsupported browser, you should hook to this script's load event
   // e.g.: <script onload="functionUsingDomainGfx();">

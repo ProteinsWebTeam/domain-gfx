@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ProteinsWebTeam/interpro7-client.svg?branch=master)](https://travis-ci.org/ProteinsWebTeam/interpro7-client)
+[![Test and Publish](https://github.com/ProteinsWebTeam/domain-gfx/workflows/Test%20and%20Publish/badge.svg)](https://github.com/ProteinsWebTeam/domain-gfx/actions?query=workflow%3A%22Test+and+Publish%22)
 
 # Domain graphics library
 
